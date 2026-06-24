@@ -1,0 +1,350 @@
+// DREX Market Cuba Demo — Prisma schema
+// Portfolio demo only. No real payments, no real products, no real wallet value.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole { CUSTOMER BENEFICIARY ADMIN WORKER }
+enum UserStatus { ACTIVE SUSPENDED DEMO }
+enum OrderStatus { PENDING_PAYMENT PAYMENT_CONFIRMED PREPARING OUT_FOR_DELIVERY DELIVERED CANCELLED DEMO_REFUNDED }
+enum PaymentStatus { PENDING APPROVED REJECTED DEMO_REFUNDED }
+enum DeliveryStatus { NOT_ASSIGNED ASSIGNED PREPARING PICKED_UP DELIVERED CANCELLED }
+enum WalletOwnerType { CUSTOMER BENEFICIARY PROVIDER COURIER WORKER ADMIN }
+enum WalletStatus { ACTIVE LOCKED DEMO }
+enum WalletDirection { CREDIT DEBIT }
+enum WalletTransactionStatus { PENDING POSTED FAILED REVERSED }
+enum WalletTransactionType { DEMO_TOPUP PURCHASE_PAYMENT REFUND_DEMO REWARD_BONUS ADMIN_ADJUSTMENT TRANSFER_IN TRANSFER_OUT TRANSFER_REVERSAL_DEMO COURIER_PAYOUT_DEMO WORKER_PAYOUT_DEMO PROVIDER_SETTLEMENT_DEMO }
+enum TransferStatus { PENDING COMPLETED FAILED REVERSED }
+enum SettlementStatus { PENDING PAID_DEMO CANCELLED }
+
+model User {
+  id           String     @id @default(cuid())
+  name         String
+  email        String     @unique
+  phone        String?
+  passwordHash String
+  role         UserRole   @default(CUSTOMER)
+  status       UserStatus @default(DEMO)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  customer      Customer?
+  beneficiary   Beneficiary?
+  wallets       Wallet[]
+  orders        Order[] @relation("CustomerOrders")
+  adminEvents   AnalyticsEvent[]
+}
+
+model Province {
+  id             String @id @default(cuid())
+  name           String @unique
+  slug           String @unique
+  municipalities Municipality[]
+}
+
+model Municipality {
+  id          String @id @default(cuid())
+  provinceId  String
+  name        String
+  slug        String
+  isAvailable Boolean @default(false)
+  message     String?
+
+  province      Province @relation(fields: [provinceId], references: [id])
+  providers     Provider[]
+  products      Product[]
+  services      Service[]
+  beneficiaries Beneficiary[]
+  couriers      Courier[]
+  orders        Order[]
+
+  @@unique([provinceId, slug])
+}
+
+model Customer {
+  id        String @id @default(cuid())
+  userId    String @unique
+  country   String?
+  notes     String?
+  user      User @relation(fields: [userId], references: [id])
+  beneficiaries Beneficiary[]
+}
+
+model Beneficiary {
+  id             String @id @default(cuid())
+  userId         String? @unique
+  customerId     String?
+  municipalityId String
+  name           String
+  phone          String
+  address        String
+  reference      String?
+  notes          String?
+
+  user         User? @relation(fields: [userId], references: [id])
+  customer     Customer? @relation(fields: [customerId], references: [id])
+  municipality Municipality @relation(fields: [municipalityId], references: [id])
+  orders       Order[]
+}
+
+model Provider {
+  id             String @id @default(cuid())
+  municipalityId String
+  name           String
+  contactName    String?
+  phone          String?
+  isActive       Boolean @default(true)
+  createdAt      DateTime @default(now())
+
+  municipality Municipality @relation(fields: [municipalityId], references: [id])
+  products     Product[]
+  services     Service[]
+  settlements  Settlement[]
+  wallets      Wallet[]
+}
+
+model Product {
+  id             String @id @default(cuid())
+  municipalityId String
+  providerId     String
+  name           String
+  slug           String @unique
+  description    String
+  category       String
+  providerCost   Int
+  salePrice      Int
+  grossMargin    Int
+  stock          Int @default(0)
+  isActive       Boolean @default(true)
+  image          String?
+  createdAt      DateTime @default(now())
+
+  municipality Municipality @relation(fields: [municipalityId], references: [id])
+  provider     Provider @relation(fields: [providerId], references: [id])
+  orderItems   OrderItem[]
+  inventoryMovements InventoryMovement[]
+}
+
+model Service {
+  id             String @id @default(cuid())
+  municipalityId String
+  providerId     String?
+  name           String
+  description    String
+  price          Int
+  isActive       Boolean @default(true)
+
+  municipality Municipality @relation(fields: [municipalityId], references: [id])
+  provider     Provider? @relation(fields: [providerId], references: [id])
+}
+
+model Courier {
+  id             String @id @default(cuid())
+  municipalityId String
+  name           String
+  phone          String?
+  vehicle        String
+  isActive       Boolean @default(true)
+
+  municipality Municipality @relation(fields: [municipalityId], references: [id])
+  deliveries   Delivery[]
+  settlements  Settlement[]
+  wallets      Wallet[]
+}
+
+model Order {
+  id             String @id @default(cuid())
+  code           String @unique
+  customerId     String
+  beneficiaryId  String
+  municipalityId String
+  subtotal       Int
+  deliveryFee    Int
+  total          Int
+  paymentStatus  PaymentStatus @default(PENDING)
+  orderStatus    OrderStatus @default(PENDING_PAYMENT)
+  deliveryStatus DeliveryStatus @default(NOT_ASSIGNED)
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  customer     User @relation("CustomerOrders", fields: [customerId], references: [id])
+  beneficiary  Beneficiary @relation(fields: [beneficiaryId], references: [id])
+  municipality Municipality @relation(fields: [municipalityId], references: [id])
+  items        OrderItem[]
+  payments     DemoPayment[]
+  delivery     Delivery?
+  settlements  Settlement[]
+  walletTransactions WalletTransaction[]
+}
+
+model OrderItem {
+  id         String @id @default(cuid())
+  orderId    String
+  productId  String
+  providerId String
+  quantity   Int
+  unitPrice  Int
+  unitCost   Int
+  lineTotal  Int
+  grossProfit Int
+  cancelledQuantity Int @default(0)
+
+  order   Order @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model DemoPayment {
+  id        String @id @default(cuid())
+  orderId   String?
+  userId    String?
+  amount    Int
+  status    PaymentStatus @default(PENDING)
+  reference String @unique
+  purpose   String
+  createdAt DateTime @default(now())
+
+  order Order? @relation(fields: [orderId], references: [id])
+}
+
+model Delivery {
+  id        String @id @default(cuid())
+  orderId   String @unique
+  courierId String?
+  status    DeliveryStatus @default(NOT_ASSIGNED)
+  assignedAt DateTime?
+  deliveredAt DateTime?
+  notes     String?
+
+  order   Order @relation(fields: [orderId], references: [id])
+  courier Courier? @relation(fields: [courierId], references: [id])
+}
+
+model Wallet {
+  id        String @id @default(cuid())
+  ownerType WalletOwnerType
+  userId    String?
+  providerId String?
+  courierId String?
+  balance   Int @default(0)
+  status    WalletStatus @default(DEMO)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user     User? @relation(fields: [userId], references: [id])
+  provider Provider? @relation(fields: [providerId], references: [id])
+  courier  Courier? @relation(fields: [courierId], references: [id])
+  transactions WalletTransaction[]
+  outgoingTransfers WalletTransfer[] @relation("OutgoingTransfers")
+  incomingTransfers WalletTransfer[] @relation("IncomingTransfers")
+}
+
+model WalletTransaction {
+  id          String @id @default(cuid())
+  walletId    String
+  relatedOrderId String?
+  type        WalletTransactionType
+  amount      Int
+  direction   WalletDirection
+  description String
+  status      WalletTransactionStatus @default(POSTED)
+  balanceAfter Int
+  createdBy   String?
+  createdAt   DateTime @default(now())
+
+  wallet Wallet @relation(fields: [walletId], references: [id])
+  relatedOrder Order? @relation(fields: [relatedOrderId], references: [id])
+}
+
+model WalletTransfer {
+  id           String @id @default(cuid())
+  fromWalletId String
+  toWalletId   String
+  amount       Int
+  status       TransferStatus @default(COMPLETED)
+  note         String?
+  createdBy    String?
+  createdAt    DateTime @default(now())
+  completedAt  DateTime?
+
+  fromWallet Wallet @relation("OutgoingTransfers", fields: [fromWalletId], references: [id])
+  toWallet   Wallet @relation("IncomingTransfers", fields: [toWalletId], references: [id])
+}
+
+model WalletAdjustment {
+  id        String @id @default(cuid())
+  walletId  String
+  amount    Int
+  reason    String
+  createdBy String
+  createdAt DateTime @default(now())
+}
+
+model Reward {
+  id        String @id @default(cuid())
+  walletId  String
+  amount    Int
+  reason    String
+  createdBy String
+  createdAt DateTime @default(now())
+}
+
+model Settlement {
+  id        String @id @default(cuid())
+  providerId String?
+  courierId  String?
+  orderId    String?
+  amount     Int
+  status     SettlementStatus @default(PENDING)
+  description String
+  createdAt DateTime @default(now())
+
+  provider Provider? @relation(fields: [providerId], references: [id])
+  courier  Courier? @relation(fields: [courierId], references: [id])
+  order    Order? @relation(fields: [orderId], references: [id])
+}
+
+model WorkerPayout {
+  id        String @id @default(cuid())
+  workerName String
+  amount    Int
+  description String
+  createdAt DateTime @default(now())
+}
+
+model CourierPayout {
+  id        String @id @default(cuid())
+  courierId String
+  amount    Int
+  description String
+  createdAt DateTime @default(now())
+}
+
+model InventoryMovement {
+  id        String @id @default(cuid())
+  productId String
+  quantity  Int
+  type      String
+  reason    String
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model AnalyticsEvent {
+  id        String @id @default(cuid())
+  type      String
+  userId    String?
+  orderId   String?
+  amount    Int?
+  metadata  String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+}
