@@ -78,8 +78,8 @@ npm run dev
 ## Rutas principales
 
 - `/` inicio
-- `/login` login demo
-- `/registro` registro demo
+- `/login` login público de cliente/beneficiario demo
+- `/registro` registro público demo
 - `/catalogo` catálogo Bauta
 - `/productos/[slug]` vista producto
 - `/carrito` carrito
@@ -88,7 +88,15 @@ npm run dev
 - `/orden/[id]` comprobante
 - `/mis-pedidos` estado de pedidos
 - `/saldo-drex` billetera demo tipo débito
-- `/admin` panel administrativo
+- `/admin/login` login administrativo separado
+- `/admin` panel administrativo privado demo
+
+## Separación de interfaces
+
+La tienda pública no debe mostrar navegación administrativa ni permitir que el usuario común gestione productos, proveedores o estadísticas internas.
+
+- Usuario/cliente: compra, carrito, beneficiario, DemoPay, Saldo DREX y pedidos.
+- Admin: proveedores, productos, imágenes, precios, pedidos, estadísticas, billeteras y liquidaciones.
 
 ## Aviso ético/legal
 

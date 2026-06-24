@@ -12,7 +12,6 @@ const nav = [
   ["Catálogo", "/catalogo"],
   ["Saldo DREX", "/saldo-drex"],
   ["Mis pedidos", "/mis-pedidos"],
-  ["Admin", "/admin"],
 ];
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -44,7 +43,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           </div>
           {children}
           <footer className="border-t border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-500">
-            DREX Market Cuba Demo — plataforma técnica de portafolio. Sin ventas reales, sin tarjetas reales, sin retiros reales.
+            DREX Market Cuba Demo — experiencia pública separada del panel administrativo. Sin ventas reales, sin tarjetas reales, sin retiros reales.
           </footer>
         </div>
       </body>

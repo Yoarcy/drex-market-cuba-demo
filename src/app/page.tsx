@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { MunicipalitySelector } from "@/components/MunicipalitySelector";
-import { IntelligencePanel } from "@/components/IntelligencePanel";
-import { analytics, products, formatMoney } from "@/lib/demo-data";
+import { products, formatMoney } from "@/lib/demo-data";
 
 export default function Home() {
   return (
@@ -17,15 +16,15 @@ export default function Home() {
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link href="/catalogo" className="btn-primary">Explorar Bauta</Link>
-            <Link href="/admin" className="btn-dark">Ver panel admin</Link>
+            <Link href="/login" className="btn-dark">Entrar o registrarme</Link>
           </div>
           <p className="mt-5 text-sm font-semibold text-slate-500">No vende productos reales. No procesa pagos reales. No use datos personales reales.</p>
         </div>
         <div className="demo-card overflow-hidden p-4">
           <div className="rounded-[1.4rem] bg-gradient-to-br from-emerald-500 via-sky-500 to-orange-400 p-6 text-white">
             <p className="text-sm font-bold uppercase tracking-[0.3em] opacity-90">Vista demo</p>
-            <h2 className="mt-3 text-3xl font-black">Orden DMC-1001</h2>
-            <p className="mt-2 text-white/85">Pago confirmado · Preparación por proveedor · Reparto local asignado</p>
+            <h2 className="mt-3 text-3xl font-black">Compra demo para Bauta</h2>
+            <p className="mt-2 text-white/85">Catálogo local · Beneficiario en Cuba · DemoPay o Saldo DREX</p>
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               {products.slice(0, 4).map((product) => (
                 <div key={product.slug} className="rounded-2xl bg-white/15 p-4 backdrop-blur">
@@ -46,21 +45,25 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
         <div className="grid gap-4 md:grid-cols-4">
           {[
-            ["Vendido demo", formatMoney(analytics.totalSales)],
-            ["Ganancia bruta", formatMoney(analytics.grossProfit)],
-            ["Ticket promedio", formatMoney(analytics.averageTicket)],
-            ["Saldo circulando", formatMoney(analytics.circulatingBalance)],
+            ["Municipio activo", "Bauta"],
+            ["Pago", "DemoPay"],
+            ["Billetera", "Saldo DREX"],
+            ["Entrega", "Reparto local"],
           ].map(([label, value]) => (
             <div key={label} className="demo-card p-6">
               <p className="text-sm font-bold text-slate-500">{label}</p>
-              <p className="mt-2 text-3xl font-black text-slate-950">{value}</p>
+              <p className="mt-2 text-2xl font-black text-slate-950">{value}</p>
             </div>
           ))}
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-16 lg:px-8">
-        <IntelligencePanel />
+        <div className="demo-card p-6">
+          <p className="text-sm font-black uppercase tracking-[0.25em] text-emerald-600">Recomendaciones para el cliente</p>
+          <h2 className="mt-3 text-2xl font-black text-slate-950">Productos sugeridos según compras demo</h2>
+          <p className="mt-2 text-slate-600">La tienda pública solo muestra recomendaciones útiles para comprar. Las estadísticas internas quedan reservadas al panel admin.</p>
+        </div>
       </section>
     </main>
   );

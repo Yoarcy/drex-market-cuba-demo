@@ -23,12 +23,15 @@ Fase iniciada: **Fase 0 / Fase 1 visual base**
   - Login
   - Registro
   - Saldo DREX
-- UI admin inicial creada:
+- UI admin inicial creada y separada de la tienda pública:
+  - login admin `/admin/login`
   - Dashboard
   - pedidos recientes
   - analítica comercial
   - municipios
   - billeteras
+  - formulario visual para agregar proveedores
+  - formulario visual para agregar productos con imagen y precios
   - productos/proveedores
 - Módulo de inteligencia demo agregado:
   - recomendaciones basadas en co-compra, tendencia semanal y saldo disponible
@@ -44,6 +47,7 @@ Fase iniciada: **Fase 0 / Fase 1 visual base**
 - DemoPay será pasarela ficticia sin datos de tarjeta.
 - Artemisa se carga completa; solo Bauta disponible en MVP.
 - La UI tiene prioridad de portafolio: debe verse comercial, moderna y responsive.
+- Tienda pública y panel admin deben estar separados; el usuario no debe ver ni navegar funciones administrativas.
 
 ## Pendiente inmediato
 

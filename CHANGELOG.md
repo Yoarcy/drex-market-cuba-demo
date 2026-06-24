@@ -31,6 +31,10 @@
   - previsión de demanda
   - riesgo de agotamiento
   - fórmula visible basada en ventas demo, tendencia y stock
+- Separación inicial de interfaces:
+  - navegación pública sin acceso admin
+  - login admin separado en `/admin/login`
+  - panel admin con formularios visuales para proveedores y productos con imágenes/precios
 
 ### Changed
 

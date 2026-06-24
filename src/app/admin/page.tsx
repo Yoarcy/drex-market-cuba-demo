@@ -15,9 +15,9 @@ export default function AdminPage() {
         <div>
           <span className="badge-demo">Admin demo</span>
           <h1 className="mt-4 text-4xl font-black text-slate-950">Dashboard operacional</h1>
-          <p className="mt-2 text-slate-600">Panel profesional para pedidos, municipios, proveedores, reparto, Saldo DREX y reportes.</p>
+          <p className="mt-2 text-slate-600">Panel administrativo separado de la tienda pública. Aquí se gestionan estadísticas, proveedores, productos, imágenes, precios, reparto, Saldo DREX y reportes.</p>
         </div>
-        <div className="rounded-full bg-slate-950 px-5 py-3 text-sm font-black text-white">admin@demo.local</div>
+        <div className="rounded-full bg-slate-950 px-5 py-3 text-sm font-black text-white">Acceso admin demo · admin@demo.local</div>
       </div>
 
       <section className="grid gap-4 md:grid-cols-4">
@@ -86,13 +86,42 @@ export default function AdminPage() {
             </div>
           </section>
 
+          <section className="grid gap-8 lg:grid-cols-2">
+            <div className="demo-card p-6">
+              <h2 className="text-2xl font-black">Agregar producto demo</h2>
+              <p className="mt-2 text-sm text-slate-600">Formulario visual admin. Luego se conectará a base de datos y carga real de imágenes.</p>
+              <div className="mt-5 grid gap-4">
+                <label className="space-y-2"><span>Nombre del producto</span><input placeholder="Combo Familiar Bauta" /></label>
+                <label className="space-y-2"><span>Proveedor</span><select><option>Proveedor Bauta Alimentos</option><option>Proveedor Bauta Aseo</option><option>Proveedor Combos Familiares</option></select></label>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="space-y-2"><span>Costo proveedor</span><input placeholder="31.00" /></label>
+                  <label className="space-y-2"><span>Precio venta</span><input placeholder="42.00" /></label>
+                </div>
+                <label className="space-y-2"><span>Imagen del producto</span><input placeholder="D:\\SOFTWARES_DREX_YOA\\DREX_MARKET_CUBA_DEMO\\imagenes-productos\\combo-familiar-bauta.jpg" /></label>
+                <button className="btn-primary">Guardar producto demo</button>
+              </div>
+            </div>
+
+            <div className="demo-card p-6">
+              <h2 className="text-2xl font-black">Agregar proveedor demo</h2>
+              <div className="mt-5 grid gap-4">
+                <label className="space-y-2"><span>Nombre proveedor</span><input placeholder="Proveedor Bauta Alimentos" /></label>
+                <label className="space-y-2"><span>Municipio</span><select><option>Bauta</option><option disabled>Artemisa — no disponible</option><option disabled>Guanajay — no disponible</option></select></label>
+                <label className="space-y-2"><span>Teléfono/contacto demo</span><input placeholder="+53 5000 0000" /></label>
+                <label className="space-y-2"><span>Estado</span><select><option>Activo</option><option>Inactivo</option></select></label>
+                <button className="btn-dark">Guardar proveedor demo</button>
+              </div>
+            </div>
+          </section>
+
           <section className="demo-card p-6">
             <h2 className="text-2xl font-black">Productos y proveedores</h2>
             <div className="mt-5 grid gap-3 md:grid-cols-2">
               {products.map((product) => (
                 <div key={product.slug} className="rounded-2xl bg-slate-50 p-4">
                   <p className="font-black">{product.image} {product.name}</p>
-                  <p className="text-sm text-slate-600">{product.provider} · margen demo {formatMoney(product.price - product.cost)}</p>
+                  <p className="text-sm text-slate-600">{product.provider} · precio {formatMoney(product.price)} · margen demo {formatMoney(product.price - product.cost)}</p>
+                  <p className="mt-1 text-xs font-semibold text-slate-500">Imagen esperada: D:\\SOFTWARES_DREX_YOA\\DREX_MARKET_CUBA_DEMO\\imagenes-productos\\{product.slug}.jpg</p>
                 </div>
               ))}
             </div>
