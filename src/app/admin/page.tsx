@@ -123,20 +123,30 @@ export default function AdminPage() {
                 <h2 className="text-2xl font-black">Agregar nuevo proveedor</h2>
                 <p className="mt-2 text-sm text-slate-600">Este formulario solo aparece cuando el admin selecciona Proveedores.</p>
                 <div className="mt-5 grid gap-4 md:grid-cols-2">
-                  <Field label="Nombre proveedor" placeholder="Proveedor Bauta Alimentos" />
-                  <Field label="Contacto" placeholder="Operador Demo" />
+                  <Field label="Nombre del proveedor" placeholder="Proveedor Bauta Mercado" />
                   <Field label="Teléfono" placeholder="+53 5000 0000" />
+                  <Field label="Teléfono alternativo" placeholder="+53 5000 0001" />
                   <label className="space-y-2">
-                    <span>Municipio operativo</span>
+                    <span>Municipio</span>
                     <select>
                       <option>Bauta — disponible</option>
                       <option disabled>Guanajay — no disponible aún</option>
                       <option disabled>Mariel — no disponible aún</option>
                     </select>
                   </label>
-                  <label className="space-y-2 md:col-span-2">
-                    <span>Categoría principal</span>
-                    <input placeholder="Alimentos, aseo, combos familiares..." />
+                  <label className="space-y-2">
+                    <span>Categoría</span>
+                    <select>
+                      <option>Mercado</option>
+                      <option>Ferretería</option>
+                      <option>Peletería</option>
+                      <option>Aseo e higiene</option>
+                      <option>Combos familiares</option>
+                    </select>
+                  </label>
+                  <label className="space-y-2">
+                    <span>Notas</span>
+                    <input placeholder="Notas internas del proveedor demo" />
                   </label>
                 </div>
                 <button className="btn-dark mt-5">Guardar proveedor demo</button>

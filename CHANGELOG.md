@@ -35,6 +35,13 @@
   - navegación pública sin acceso admin
   - login admin separado en `/admin/login`
   - panel admin con formularios visuales para proveedores y productos con imágenes/precios
+- Formulario de proveedor ajustado:
+  - nombre del proveedor
+  - teléfono
+  - teléfono alternativo
+  - municipio
+  - categoría
+  - notas
 
 ### Changed
 
