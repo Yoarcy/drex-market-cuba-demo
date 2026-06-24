@@ -42,6 +42,39 @@ Demostrar capacidad técnica y de negocio construyendo una experiencia completa 
 - DemoPay con botones de prueba: aprobado, rechazado y pendiente.
 - Panel admin visual con pedidos, productos, proveedores, billeteras y reportes.
 
+## Registro/login de usuarios
+
+El comprador y el beneficiario deben tener usuario y sesión iniciada para completar el flujo real.
+
+- Visitante: puede ver inicio y catálogo demo.
+- Usuario registrado: puede usar carrito, checkout, Saldo DREX y pedidos.
+- Admin: usa `/admin/login` y no comparte navegación con la tienda pública.
+
+## Imágenes de productos
+
+Carpeta local de trabajo para imágenes:
+
+```txt
+D:\SOFTWARES_DREX_YOA\DREX_MARKET_CUBA_DEMO\imagenes-productos
+```
+
+Formato recomendado:
+
+- JPG/JPEG para fotos.
+- WebP para web optimizada.
+- PNG solo para transparencias/logos demo.
+- Tamaño ideal: 1200x1200 px.
+- Mínimo aceptable: 800x800 px.
+- Nombres tipo slug: minúsculas, sin espacios, sin acentos.
+
+Ejemplos:
+
+```txt
+combo-familiar-bauta.jpg
+kit-aseo-hogar.webp
+combo-desayuno.jpg
+```
+
 ## Saldo DREX
 
 Saldo DREX es una billetera interna demostrativa tipo débito.

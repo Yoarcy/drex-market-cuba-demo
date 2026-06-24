@@ -13,6 +13,9 @@ export default function CheckoutPage() {
       <span className="badge-demo">Checkout protegido demo</span>
       <h1 className="mt-4 text-4xl font-black text-slate-950">Datos de compra y entrega</h1>
       <p className="mt-2 text-slate-600">Formulario visual de portafolio. No introduzca datos reales.</p>
+      <div className="mt-5 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm font-bold text-sky-800">
+        Requisito de flujo: el comprador debe tener cuenta creada y sesión iniciada antes de confirmar la compra.
+      </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-2">
         <section className="demo-card p-6">
