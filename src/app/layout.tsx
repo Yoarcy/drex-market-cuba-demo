@@ -19,7 +19,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="es">
       <body>
         <div className="min-h-screen bg-slate-50 text-slate-900">
-          <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur">
+          <header className="sticky top-0 z-50 border-b border-white/40 bg-white/70 shadow-sm shadow-slate-900/5 backdrop-blur-xl supports-[backdrop-filter]:bg-white/55">
             <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:justify-between lg:px-8">
               <Link href="/" className="flex items-center gap-3">
                 <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-sky-500 text-xl font-black text-white shadow-lg shadow-emerald-200">D</span>
