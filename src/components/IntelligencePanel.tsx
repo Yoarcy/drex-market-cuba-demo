@@ -1,8 +1,25 @@
 import { demandForecast, productRecommendations } from "@/lib/demo-data";
 
 export function IntelligencePanel() {
+  const summary = [
+    ["Ventas demo", "$242", "Total acumulado ficticio"],
+    ["Ganancia estimada", "$63", "Margen bruto demo"],
+    ["Pedidos activos", "4", "Preparando / reparto / entregados"],
+    ["Riesgo stock", "2", "Productos a vigilar"],
+  ];
+
   return (
-    <section className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+    <section className="space-y-8">
+      <div className="grid gap-4 md:grid-cols-4">
+        {summary.map(([label, value, note]) => (
+          <article key={label} className="demo-card p-5">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">{label}</p>
+            <p className="mt-2 text-3xl font-black text-emerald-700">{value}</p>
+            <p className="mt-1 text-xs font-semibold text-slate-500">{note}</p>
+          </article>
+        ))}
+      </div>
+      <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
       <div className="demo-card p-6">
         <p className="text-sm font-black uppercase tracking-[0.25em] text-emerald-600">Motor inteligente demo</p>
         <h2 className="mt-3 text-2xl font-black text-slate-950">Recomendaciones comprobables</h2>
@@ -70,6 +87,7 @@ export function IntelligencePanel() {
         <div className="mt-5 rounded-2xl bg-sky-50 p-4 text-sm font-semibold text-sky-800">
           Fórmula demo visible: promedio diario = ventas últimos 7 días / 7. Días a agotarse = stock / promedio diario. Proyección = ventas actuales + 60% de la tendencia semanal.
         </div>
+      </div>
       </div>
     </section>
   );
