@@ -549,3 +549,21 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
   54% { transform: translateX(-1px) rotate(-3deg) scale(1.06); }
   72% { transform: translateX(.8px) rotate(2deg) scale(1.04); }
 }
+
+
+/* Hero copy card alignment */
+.hero-copy-card {
+  display: flex !important;
+  min-height: 410px !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.82) !important;
+  border: 1px solid rgba(20,184,166,.22) !important;
+  box-shadow: 18px 24px 70px rgba(15,23,42,.10) !important;
+  padding: 38px !important;
+  overflow: hidden !important;
+}
+@media (max-width: 650px) {
+  .hero-copy-card { min-height: auto !important; padding: 24px !important; }
+}
