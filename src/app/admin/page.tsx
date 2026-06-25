@@ -28,6 +28,8 @@ export default function AdminPage() {
   const [providerList, setProviderList] = useState<Provider[]>(initialProviders);
   const [selectedProvider, setSelectedProvider] = useState(initialProviders[0].id);
   const [viewProvider, setViewProvider] = useState<Provider | null>(null);
+  const [showProviderForm, setShowProviderForm] = useState(false);
+  const [providerSearch, setProviderSearch] = useState("");
   const [providerForm, setProviderForm] = useState({
     name: "",
     phone: "",
@@ -41,6 +43,16 @@ export default function AdminPage() {
     () => providerList.find((provider) => provider.id === selectedProvider) ?? providerList[0],
     [providerList, selectedProvider],
   );
+  const filteredProviders = useMemo(() => {
+    const query = providerSearch.trim().toLowerCase();
+    if (!query) return providerList;
+    return providerList.filter((provider) =>
+      [provider.name, provider.municipality, provider.province, provider.category, provider.phone, provider.id]
+        .join(" ")
+        .toLowerCase()
+        .includes(query),
+    );
+  }, [providerList, providerSearch]);
 
   const updateProviderField = (field: keyof typeof providerForm, value: string) => {
     setProviderForm((current) => ({ ...current, [field]: value }));
@@ -98,25 +110,42 @@ export default function AdminPage() {
 
           {section === "Proveedores" && <>
             <section className="demo-card p-6">
-              <h2 className="text-2xl font-black">Agregar nuevo proveedor</h2>
-              <p className="mt-2 text-sm text-slate-600">Al guardar, el proveedor se agrega a la lista de abajo en esta demo visual.</p>
-              <div className="mt-5 grid gap-4 md:grid-cols-2">
-                <Field label="Nombre del proveedor" placeholder="Proveedor Bauta Mercado" value={providerForm.name} onChange={(value) => updateProviderField("name", value)} />
-                <Field label="Teléfono" placeholder="+53 5000 0000" value={providerForm.phone} onChange={(value) => updateProviderField("phone", value)} />
-                <Field label="Teléfono alternativo" placeholder="+53 5000 0001" value={providerForm.altPhone} onChange={(value) => updateProviderField("altPhone", value)} />
-                <label className="space-y-2"><span>Municipio</span><select value={providerForm.municipality} onChange={(event) => updateProviderField("municipality", event.target.value)}><option>Bauta</option><option disabled>Guanajay — no disponible aún</option><option disabled>Mariel — no disponible aún</option></select></label>
-                <label className="space-y-2"><span>Categoría</span><select value={providerForm.category} onChange={(event) => updateProviderField("category", event.target.value)}><option>Mercado</option><option>Ferretería</option><option>Peletería</option><option>Aseo e higiene</option><option>Combos familiares</option></select></label>
-                <Field label="Notas" placeholder="Notas internas del proveedor demo" value={providerForm.notes} onChange={(value) => updateProviderField("notes", value)} />
-              </div>
-              <button onClick={addProvider} className="btn-dark mt-5">Guardar proveedor demo</button>
+              <button onClick={() => setShowProviderForm((value) => !value)} className="flex w-full items-center justify-between text-left">
+                <span>
+                  <span className="text-2xl font-black text-slate-950">Agregar nuevo proveedor</span>
+                  <span className="mt-1 block text-sm font-semibold text-slate-600">Formulario contraído para dejar visible la lista.</span>
+                </span>
+                <span className="rounded-full bg-emerald-50 px-4 py-2 text-sm font-black text-emerald-700">{showProviderForm ? "Ocultar" : "Desplegar"}</span>
+              </button>
+              {showProviderForm && (
+                <div className="mt-5">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Field label="Nombre del proveedor" placeholder="Proveedor Bauta Mercado" value={providerForm.name} onChange={(value) => updateProviderField("name", value)} />
+                    <Field label="Teléfono" placeholder="+53 5000 0000" value={providerForm.phone} onChange={(value) => updateProviderField("phone", value)} />
+                    <Field label="Teléfono alternativo" placeholder="+53 5000 0001" value={providerForm.altPhone} onChange={(value) => updateProviderField("altPhone", value)} />
+                    <label className="space-y-2"><span>Municipio</span><select value={providerForm.municipality} onChange={(event) => updateProviderField("municipality", event.target.value)}><option>Bauta</option><option disabled>Guanajay — no disponible aún</option><option disabled>Mariel — no disponible aún</option></select></label>
+                    <label className="space-y-2"><span>Categoría</span><select value={providerForm.category} onChange={(event) => updateProviderField("category", event.target.value)}><option>Mercado</option><option>Ferretería</option><option>Peletería</option><option>Aseo e higiene</option><option>Combos familiares</option></select></label>
+                    <Field label="Notas" placeholder="Notas internas del proveedor demo" value={providerForm.notes} onChange={(value) => updateProviderField("notes", value)} />
+                  </div>
+                  <button onClick={addProvider} className="btn-dark mt-5">Guardar proveedor demo</button>
+                </div>
+              )}
             </section>
 
             {viewProvider && <section className="rounded-[1.75rem] border border-emerald-200 bg-emerald-50 p-6"><div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between"><div><p className="text-xs font-black text-emerald-700">Vista de proveedor</p><h2 className="mt-1 text-2xl font-black text-slate-950">{viewProvider.name}</h2><div className="mt-3 grid gap-2 text-sm font-semibold text-slate-700 md:grid-cols-2"><p>ID: {viewProvider.id}</p><p>Municipio: {viewProvider.municipality}, {viewProvider.province}</p><p>Categoría: {viewProvider.category}</p><p>Teléfono: {viewProvider.phone}</p><p>Estado: {viewProvider.status}</p><p>Notas: {viewProvider.contact}</p></div></div><button onClick={() => setViewProvider(null)} className="rounded-full bg-white px-4 py-2 text-sm font-black text-emerald-700">Cerrar vista</button></div></section>}
 
             <section className="demo-card p-6">
-              <h2 className="text-2xl font-black">Lista de proveedores registrados</h2>
+              <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <h2 className="text-2xl font-black">Lista de proveedores registrados</h2>
+                  <p className="mt-1 text-sm font-semibold text-slate-600">Busca por municipio, nombre, teléfono, categoría o ID.</p>
+                </div>
+                <label className="w-full space-y-2 md:max-w-sm"><span>Buscar proveedor</span><input placeholder="Ej: Bauta, mercado, +53, nombre..." value={providerSearch} onChange={(event) => setProviderSearch(event.target.value)} /></label>
+              </div>
+              <p className="mt-4 text-sm font-bold text-slate-500">Resultados: {filteredProviders.length}</p>
               <div className="mt-5 grid gap-3">
-                {providerList.map((provider) => <article key={provider.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4"><div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"><div><p className="text-xs font-black text-emerald-700">{provider.id}</p><h3 className="text-lg font-black text-slate-950">{provider.name}</h3><p className="text-sm font-semibold text-slate-600">{provider.category} · {provider.municipality}, {provider.province}</p><p className="mt-1 text-xs font-semibold text-slate-500">Tel: {provider.phone}</p></div><div className="flex flex-wrap gap-2"><button onClick={() => setViewProvider(provider)} className="rounded-full bg-sky-50 px-4 py-2 text-xs font-black text-sky-700">Ver datos</button><button onClick={() => deleteProvider(provider.id)} className="rounded-full bg-red-50 px-4 py-2 text-xs font-black text-red-700">Eliminar</button><span className="rounded-full bg-emerald-50 px-3 py-2 text-xs font-black text-emerald-700">{provider.status}</span></div></div></article>)}
+                {filteredProviders.map((provider) => <article key={provider.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4"><div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"><div><p className="text-xs font-black text-emerald-700">{provider.id}</p><h3 className="text-lg font-black text-slate-950">{provider.name}</h3><p className="text-sm font-semibold text-slate-600">{provider.category} · {provider.municipality}, {provider.province}</p><p className="mt-1 text-xs font-semibold text-slate-500">Tel: {provider.phone}</p></div><div className="flex flex-wrap gap-2"><button onClick={() => setViewProvider(provider)} className="rounded-full bg-sky-50 px-4 py-2 text-xs font-black text-sky-700">Ver datos</button><button onClick={() => deleteProvider(provider.id)} className="rounded-full bg-red-50 px-4 py-2 text-xs font-black text-red-700">Eliminar</button><span className="rounded-full bg-emerald-50 px-3 py-2 text-xs font-black text-emerald-700">{provider.status}</span></div></div></article>)}
+                {filteredProviders.length === 0 && <div className="rounded-2xl bg-slate-50 p-6 text-center text-sm font-bold text-slate-500">No hay proveedores que coincidan con la búsqueda.</div>}
               </div>
             </section>
           </>}
