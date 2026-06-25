@@ -29,14 +29,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <span className="menu-icon" aria-hidden="true" />
               </label>
               <Link href="/" className="brand-center" aria-label="DREX Market Cuba Demo">
-                <span className="brand-mark">D</span>
-                <span className="brand-copy"><span className="brand-main"><strong>DREX</strong> Market</span><span className="brand-sub">Cuba Demo</span></span>
+                <img src="/drex-market-wordmark.svg" alt="DREX Market Cuba Demo" className="brand-wordmark" />
               </Link>
               <Link href="/carrito" className="cart-shortcut" aria-label="Carrito">🛒</Link>
             </div>
             <label htmlFor="public-menu-toggle" className="drawer-backdrop" aria-hidden="true" />
             <aside className="public-drawer">
-              <div className="drawer-title"><span className="brand-mark small">D</span><div><strong>DREX Market</strong><p>Cuba Demo</p></div></div>
+              <div className="drawer-title"><img src="/drex-market-mark.svg" alt="DREX" className="drawer-logo-mark" /><div><strong>DREX Market</strong><p>Cuba Demo</p></div></div>
               <nav className="drawer-nav">
                 {nav.map(([label, href], index) => (
                   <Link key={href} href={href}><span>{String(index + 1).padStart(2, "0")}</span>{label}</Link>

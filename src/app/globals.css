@@ -290,3 +290,36 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
   .brand-mark { height: 38px; width: 38px; font-size: 18px; }
   .brand-sub::before, .brand-sub::after { width: 28px; margin-inline: 7px; }
 }
+
+/* Final customer logo/menu correction from supplied DREX assets */
+.brand-wordmark {
+  display: block;
+  width: min(360px, 58vw);
+  height: auto;
+  max-height: 58px;
+  object-fit: contain;
+}
+.drawer-logo-mark {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+.menu-icon::before,
+.menu-icon::after { box-shadow: none !important; }
+.menu-icon::before {
+  top: 4px !important;
+  width: 24px !important;
+  height: 3px !important;
+  background: #071827 !important;
+}
+.menu-icon::after {
+  bottom: 4px !important;
+  width: 15px !important;
+  height: 3px !important;
+  background: #0F9F95 !important;
+}
+.brand-mark,
+.brand-copy { display: none; }
+@media (max-width: 640px) {
+  .brand-wordmark { width: min(270px, 56vw); max-height: 48px; }
+}
