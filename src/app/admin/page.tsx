@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IntelligencePanel } from "@/components/IntelligencePanel";
 import { analytics, demoOrders, formatMoney, products, providers as initialProviders, walletTransactions } from "@/lib/demo-data";
 
@@ -26,6 +26,7 @@ function Field({ label, placeholder, type = "text", value, onChange }: { label: 
 export default function AdminPage() {
   const [section, setSection] = useState("Dashboard");
   const [providerList, setProviderList] = useState<Provider[]>(initialProviders);
+  const [providersLoaded, setProvidersLoaded] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState(initialProviders[0].id);
   const [viewProvider, setViewProvider] = useState<Provider | null>(null);
   const [showProviderForm, setShowProviderForm] = useState(false);
@@ -38,6 +39,28 @@ export default function AdminPage() {
     category: "Mercado",
     notes: "",
   });
+
+  useEffect(() => {
+    const savedProviders = window.localStorage.getItem("drex-market-demo-providers");
+    if (savedProviders) {
+      try {
+        const parsedProviders = JSON.parse(savedProviders) as Provider[];
+        if (Array.isArray(parsedProviders) && parsedProviders.length > 0) {
+          setProviderList(parsedProviders);
+          setSelectedProvider(parsedProviders[0].id);
+        }
+      } catch {
+        window.localStorage.removeItem("drex-market-demo-providers");
+      }
+    }
+    setProvidersLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (providersLoaded) {
+      window.localStorage.setItem("drex-market-demo-providers", JSON.stringify(providerList));
+    }
+  }, [providerList, providersLoaded]);
 
   const activeProvider = useMemo(
     () => providerList.find((provider) => provider.id === selectedProvider) ?? providerList[0],
