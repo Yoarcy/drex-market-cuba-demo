@@ -42,7 +42,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             Modo demostración: no use datos reales, no hay pagos reales, productos ficticios y DemoPay simulado.
           </div>
           {children}
-          <footer className="border-t border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-500">
+          <footer className="border-t border-white/10 bg-slate-950 px-4 py-8 text-center text-sm font-semibold text-slate-300">
             DREX Market Cuba Demo — experiencia pública separada del panel administrativo. Sin ventas reales, sin tarjetas reales, sin retiros reales.
           </footer>
         </div>
