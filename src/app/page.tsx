@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { MunicipalitySelector } from "@/components/MunicipalitySelector";
-import { products, formatMoney } from "@/lib/demo-data";
 
 export default function Home() {
   return (
@@ -20,25 +19,20 @@ export default function Home() {
           </div>
           <p className="mt-5 text-sm font-semibold text-slate-500">No vende productos reales. No procesa pagos reales. No use datos personales reales.</p>
         </div>
-        <div className="demo-card overflow-hidden p-4">
-          <div className="rounded-[1.4rem] bg-gradient-to-br from-emerald-500 via-sky-500 to-orange-400 p-6 text-white">
-            <p className="text-sm font-bold uppercase tracking-[0.3em] opacity-90">Vista demo</p>
-            <h2 className="mt-3 text-3xl font-black">Compra demo para Bauta</h2>
-            <p className="mt-2 text-white/85">Catálogo local · Beneficiario en Cuba · DemoPay o Saldo DREX</p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              {products.slice(0, 4).map((product) => (
-                <div key={product.slug} className="rounded-2xl bg-white/15 p-4 backdrop-blur">
-                  <div className="text-4xl">{product.image}</div>
-                  <p className="mt-2 font-bold">{product.name}</p>
-                  <p className="text-sm text-white/80">{formatMoney(product.price)}</p>
-                </div>
-              ))}
+        <div className="demo-card hero-carousel-card overflow-hidden p-0">
+          <div className="hero-carousel" aria-label="Tira automática de imágenes DREX Market">
+            <div className="hero-carousel-track">
+              <img src="/hero-strip/hero-01.png" alt="DREX Market producto 1" />
+              <img src="/hero-strip/hero-02.png" alt="DREX Market producto 2" />
+              <img src="/hero-strip/hero-03.png" alt="DREX Market producto 3" />
+              <img src="/hero-strip/hero-04.png" alt="DREX Market producto 4" />
             </div>
+            <div className="hero-carousel-dots"><span /><span /><span /><span /></div>
           </div>
         </div>
       </div></section>
 
-      <section className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
+      <section id="ubicacion" className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
         <MunicipalitySelector />
       </section>
 

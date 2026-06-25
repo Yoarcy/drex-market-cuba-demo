@@ -5,6 +5,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "DREX Market Cuba Demo",
   description: "Marketplace hiperlocal demostrativo para portafolio. No procesa pagos reales.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/drex-market-mark.svg",
+  },
 };
 
 const nav = [
@@ -28,10 +33,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <label htmlFor="public-menu-toggle" className="menu-trigger" aria-label="Abrir menú">
                 <span className="menu-icon" aria-hidden="true" />
               </label>
-              <Link href="/" className="brand-center" aria-label="DREX Market Cuba Demo">
-                <img src="/drex-market-wordmark.svg" alt="DREX Market Cuba Demo" className="brand-wordmark" />
+              <Link href="/" className="brand-center header-logo-title" aria-label="DREX Market Cuba Demo">
+                <img src="/drex-market-mark.svg" alt="Logo DREX" className="brand-header-mark" />
+                <span className="brand-text-lockup"><span className="brand-line"><b>DREX</b><strong>Market</strong></span><span className="brand-subline">Cuba Demo</span></span>
               </Link>
-              <Link href="/carrito" className="cart-shortcut" aria-label="Carrito">🛒</Link>
+              <nav className="header-actions" aria-label="Accesos rápidos">
+                <Link href="/carrito" className="header-icon-link" aria-label="Carrito"><img src="/icons/03_cart.png" alt="Carrito" /></Link>
+                <Link href="/saldo-drex" className="header-icon-link" aria-label="Billetera virtual"><img src="/icons/04_wallet.png" alt="Billetera" /></Link>
+                <Link href="/#ubicacion" className="header-icon-link" aria-label="Municipio del beneficiario"><img src="/icons/06_ubicacion.png" alt="Ubicación" /></Link>
+                <Link href="/login" className="header-icon-link" aria-label="Perfil o login"><img src="/icons/18_user_login.png" alt="Perfil" /></Link>
+              </nav>
             </div>
             <label htmlFor="public-menu-toggle" className="drawer-backdrop" aria-hidden="true" />
             <aside className="public-drawer">
@@ -47,8 +58,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             Modo demostración: no use datos reales, no hay pagos reales, productos ficticios y DemoPay simulado.
           </div>
           {children}
-          <footer className="border-t border-white/10 bg-slate-950 px-4 py-8 text-center text-sm font-semibold text-slate-300">
-            DREX Market Cuba Demo — experiencia pública separada del panel administrativo. Sin ventas reales, sin tarjetas reales, sin retiros reales.
+          <footer className="footer-dark border-t border-white/10 bg-slate-950 px-4 py-8 text-center text-sm font-semibold text-slate-300">
+            <div className="footer-actions" aria-label="Contacto y ayuda">
+              <a href="#" className="footer-icon-link" aria-label="WhatsApp"><img src="/icons/21_whatsapp_transparent.png" alt="WhatsApp" /></a>
+              <a href="#" className="footer-icon-link" aria-label="Correo"><img src="/icons/22_correo_transparent.png" alt="Correo" /></a>
+              <a href="#" className="footer-icon-link" aria-label="Preguntas frecuentes"><img src="/icons/23_preguntas_frecuentes_transparent.png" alt="Preguntas frecuentes" /></a>
+            </div>
+            <div>DREX Market Cuba Demo — experiencia pública separada del panel administrativo. Sin ventas reales, sin tarjetas reales, sin retiros reales.</div>
           </footer>
         </div>
       </body>
