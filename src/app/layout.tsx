@@ -18,8 +18,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="es">
       <body>
-        <div className="min-h-screen bg-slate-50 text-slate-900">
-          <header className="sticky top-0 z-50 border-b border-white/40 bg-white/70 shadow-sm shadow-slate-900/5 backdrop-blur-xl supports-[backdrop-filter]:bg-white/55">
+        <div className="min-h-screen bg-[linear-gradient(180deg,#F0FDFA_0%,#F6F8FB_38%,#FFFFFF_100%)] text-slate-900">
+          <header className="sticky top-0 z-50 min-h-[72px] border-b border-slate-200 bg-white/80 shadow-sm shadow-slate-900/5 backdrop-blur-xl supports-[backdrop-filter]:bg-white/80">
             <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:justify-between lg:px-8">
               <Link href="/" className="flex items-center gap-3">
                 <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-sky-500 text-xl font-black text-white shadow-lg shadow-emerald-200">D</span>
@@ -34,7 +34,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                     {label}
                   </Link>
                 ))}
-                <Link href="/login" className="rounded-full bg-slate-950 px-4 py-2 text-white transition hover:bg-emerald-700">Entrar</Link>
+                <Link href="/login" className="rounded-xl bg-orange-500 px-4 py-2 text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-0.5 hover:bg-orange-600">Entrar</Link>
               </nav>
             </div>
           </header>
