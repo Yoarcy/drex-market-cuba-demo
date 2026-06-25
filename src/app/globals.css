@@ -524,3 +524,6 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 /* Drawer outside-click close support: keep backdrop above page, below drawer */
 .drawer-backdrop { z-index: 48 !important; }
 .public-drawer { z-index: 49 !important; }
+
+/* Menu click fix: trigger must stay clickable above drawer backdrop */
+.menu-trigger { position: relative !important; z-index: 52 !important; }
