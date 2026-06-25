@@ -31,6 +31,8 @@ export default function AdminPage() {
   const [viewProvider, setViewProvider] = useState<Provider | null>(null);
   const [showProviderForm, setShowProviderForm] = useState(false);
   const [providerSearch, setProviderSearch] = useState("");
+  const [productImageName, setProductImageName] = useState("");
+  const productAutoId = `PRD-BAU-${String(products.length + 1).padStart(4, "0")}`;
   const [providerForm, setProviderForm] = useState({
     name: "",
     phone: "",
@@ -173,7 +175,40 @@ export default function AdminPage() {
             </section>
           </>}
 
-          {section === "Productos" && <><section className="demo-card p-6"><h2 className="text-2xl font-black">Agregar nuevo producto</h2><p className="mt-2 text-sm text-slate-600">Primero se selecciona el proveedor. Eso determina el municipio donde el producto estará disponible.</p><div className="mt-5 grid gap-4"><label className="space-y-2"><span>Proveedor</span><select value={selectedProvider} onChange={(event) => setSelectedProvider(event.target.value)}>{providerList.map((provider) => <option key={provider.id} value={provider.id}>{provider.name} · {provider.municipality}</option>)}</select></label>{activeProvider && <div className="rounded-2xl bg-emerald-50 p-4 text-sm font-bold text-emerald-800">Municipio automático: {activeProvider.municipality}, {activeProvider.province}. El producto quedará disponible solo donde opera este proveedor.</div>}<div className="grid gap-4 md:grid-cols-2"><Field label="ID automático" placeholder="PRD-BAU-0007" /><Field label="Nombre identificativo" placeholder="combo-familiar-bauta" /><Field label="Nombre comercial" placeholder="Combo Familiar Bauta" /><Field label="Marca" placeholder="DREX Demo / marca ficticia" /><Field label="Gramaje / formato" placeholder="1 kg, 500 g, combo variado..." /><Field label="Foto / archivo" placeholder="combo-familiar-bauta.jpg" /><Field label="Precio de compra" placeholder="31.00" type="number" /><Field label="Precio de venta" placeholder="42.00" type="number" /></div></div><button className="btn-primary mt-5">Guardar producto demo</button></section><section className="demo-card p-6"><h2 className="text-2xl font-black">Lista de productos registrados</h2><div className="mt-5 overflow-x-auto"><table className="w-full min-w-[860px] text-left text-sm"><thead className="text-slate-500"><tr><th className="py-3">ID</th><th>Producto</th><th>Proveedor</th><th>Marca</th><th>Gramaje</th><th>Compra</th><th>Venta</th><th>Imagen</th></tr></thead><tbody>{products.map((product) => <tr key={product.slug} className="border-t border-slate-100"><td className="py-4 font-black">{product.id}</td><td>{product.image} {product.name}</td><td>{product.provider}</td><td>{product.brand}</td><td>{product.weight}</td><td>{formatMoney(product.cost)}</td><td className="font-black text-emerald-700">{formatMoney(product.price)}</td><td className="text-xs text-slate-500">{product.imageFile}</td></tr>)}</tbody></table></div></section></>}
+          {section === "Productos" && <>
+            <section className="demo-card p-6">
+              <h2 className="text-2xl font-black">Agregar nuevo producto</h2>
+              <p className="mt-2 text-sm text-slate-600">El sistema genera el ID. Primero se selecciona proveedor y eso define el municipio disponible.</p>
+              <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_220px]">
+                <div className="grid gap-4">
+                  <label className="space-y-2"><span>Proveedor</span><select value={selectedProvider} onChange={(event) => setSelectedProvider(event.target.value)}>{providerList.map((provider) => <option key={provider.id} value={provider.id}>{provider.name}</option>)}</select></label>
+                  <label className="space-y-2"><span>Municipio automático</span><input readOnly value={activeProvider ? `${activeProvider.municipality}, ${activeProvider.province}` : "Sin proveedor"} /></label>
+                  <label className="space-y-2"><span>ID automático</span><input readOnly value={productAutoId} /></label>
+                </div>
+                <label className="flex min-h-52 cursor-pointer flex-col items-center justify-center rounded-[1.75rem] border-2 border-dashed border-slate-300 bg-slate-50 p-4 text-center transition hover:border-emerald-400 hover:bg-emerald-50">
+                  <span className="text-sm font-black text-slate-700">Imagen del producto</span>
+                  <span className="mt-3 flex h-28 w-28 items-center justify-center rounded-3xl bg-white text-4xl shadow-inner">{productImageName ? "🖼️" : "+"}</span>
+                  <span className="mt-3 max-w-40 truncate text-xs font-semibold text-slate-500">{productImageName || "Subir archivo"}</span>
+                  <input className="hidden" type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => setProductImageName(event.target.files?.[0]?.name ?? "")} />
+                </label>
+              </div>
+              <div className="mt-5 grid gap-4">
+                <Field label="Nombre identificativo" placeholder="combo-familiar-bauta" />
+                <Field label="Nombre comercial" placeholder="Combo Familiar Bauta" />
+                <Field label="Marca" placeholder="DREX Demo / marca ficticia" />
+                <div className="grid gap-4 md:grid-cols-[1fr_180px]">
+                  <Field label="Gramaje" placeholder="1" type="number" />
+                  <label className="space-y-2"><span>Unidad</span><select><option>lb</option><option>g</option><option>kg</option></select></label>
+                </div>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <Field label="Precio de compra" placeholder="31.00" type="number" />
+                  <Field label="Precio de venta" placeholder="42.00" type="number" />
+                </div>
+              </div>
+              <button className="btn-primary mt-5">Guardar producto demo</button>
+            </section>
+            <section className="demo-card p-6"><h2 className="text-2xl font-black">Lista de productos registrados</h2><div className="mt-5 overflow-x-auto"><table className="w-full min-w-[860px] text-left text-sm"><thead className="text-slate-500"><tr><th className="py-3">ID</th><th>Producto</th><th>Proveedor</th><th>Marca</th><th>Gramaje</th><th>Compra</th><th>Venta</th><th>Imagen</th></tr></thead><tbody>{products.map((product) => <tr key={product.slug} className="border-t border-slate-100"><td className="py-4 font-black">{product.id}</td><td>{product.image} {product.name}</td><td>{product.provider}</td><td>{product.brand}</td><td>{product.weight}</td><td>{formatMoney(product.cost)}</td><td className="font-black text-emerald-700">{formatMoney(product.price)}</td><td className="text-xs text-slate-500">{product.imageFile}</td></tr>)}</tbody></table></div></section>
+          </>}
 
           {section === "Pedidos" && <section className="demo-card p-6"><h2 className="text-2xl font-black">Pedidos recientes</h2><div className="mt-5 overflow-x-auto"><table className="w-full min-w-[760px] text-left text-sm"><thead className="text-slate-500"><tr><th className="py-3">Orden</th><th>Beneficiario</th><th>Pago</th><th>Repartidor</th><th>Estado</th><th>Total</th></tr></thead><tbody>{demoOrders.map((order) => <tr key={order.id} className="border-t border-slate-100"><td className="py-4 font-black">{order.id}</td><td>{order.beneficiary}</td><td>{order.payment}</td><td>{order.courier}</td><td><span className="rounded-full bg-sky-50 px-3 py-1 text-xs font-black text-sky-700">{order.status}</span></td><td className="font-black">{formatMoney(order.total)}</td></tr>)}</tbody></table></div></section>}
 
