@@ -152,3 +152,141 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 @media (max-width: 768px) {
   main > section.grid > aside.demo-card { position: static; }
 }
+
+/* Public customer header: centered brand + left drawer */
+.public-header { isolation: isolate; }
+.menu-trigger {
+  display: inline-flex;
+  height: 44px;
+  width: 44px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  transition: transform 180ms ease, background 180ms ease;
+}
+.menu-trigger:hover { transform: translateY(-1px); background: rgba(240, 253, 250, 0.92); }
+.menu-icon {
+  position: relative;
+  height: 18px;
+  width: 22px;
+  display: inline-block;
+}
+.menu-icon::before,
+.menu-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0B1220 0%, #0F766E 100%);
+  box-shadow: 0 7px 0 rgba(15, 118, 110, 0.82);
+}
+.menu-icon::before { top: 2px; width: 22px; }
+.menu-icon::after { bottom: 2px; width: 14px; }
+.brand-center {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-text);
+  text-align: center;
+}
+.brand-mark {
+  display: inline-flex;
+  height: 44px;
+  width: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px 22px 22px 14px;
+  background: linear-gradient(135deg, #0F766E 0%, #14B8A6 100%);
+  color: white;
+  font-size: 22px;
+  font-weight: 900;
+  box-shadow: 0 14px 28px rgba(15, 118, 110, 0.22);
+}
+.brand-mark.small { height: 38px; width: 38px; font-size: 18px; }
+.brand-copy { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.brand-main { font-size: clamp(1.35rem, 3vw, 2.15rem); font-weight: 800; letter-spacing: -0.04em; color: #0B1220; }
+.brand-main strong { color: #0B1220; }
+.brand-main:not(strong) { color: #0F766E; }
+.brand-sub {
+  position: relative;
+  margin-top: 6px;
+  color: #334155;
+  font-size: clamp(0.82rem, 1.7vw, 1.1rem);
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+.brand-sub::before,
+.brand-sub::after {
+  content: "";
+  display: inline-block;
+  width: 44px;
+  height: 1px;
+  margin: 0 10px 4px;
+  background: #0F766E;
+}
+.cart-shortcut {
+  justify-self: end;
+  display: inline-flex;
+  height: 44px;
+  width: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(15,23,42,.08);
+  box-shadow: 0 10px 24px rgba(15,23,42,.08);
+}
+.drawer-backdrop {
+  pointer-events: none;
+  position: fixed;
+  inset: 72px 0 0;
+  z-index: 48;
+  background: rgba(15, 23, 42, 0);
+  opacity: 0;
+  transition: opacity 200ms ease, background 200ms ease;
+}
+.public-drawer {
+  position: fixed;
+  left: 0;
+  top: 72px;
+  z-index: 49;
+  height: calc(100vh - 72px);
+  width: min(360px, 88vw);
+  transform: translateX(-102%);
+  border-right: 1px solid rgba(226, 232, 240, 0.9);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  box-shadow: 30px 0 80px rgba(15, 23, 42, 0.14);
+  padding: 22px;
+  transition: transform 220ms ease;
+}
+.peer\/public-menu:checked ~ .drawer-backdrop { pointer-events: auto; opacity: 1; background: rgba(15, 23, 42, 0.18); }
+.peer\/public-menu:checked ~ .public-drawer { transform: translateX(0); }
+.drawer-title { display: flex; align-items: center; gap: 12px; padding-bottom: 18px; border-bottom: 1px solid var(--color-border); }
+.drawer-title strong { color: var(--color-text); font-size: 18px; }
+.drawer-title p { margin: 3px 0 0; font-size: 13px; font-weight: 700; color: var(--color-primary); }
+.drawer-nav { display: grid; gap: 8px; margin-top: 18px; }
+.drawer-nav a {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 12px;
+  border-radius: 14px;
+  padding: 0 14px;
+  color: #334155;
+  font-weight: 750;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+.drawer-nav a span { color: #0F766E; font-size: 12px; font-weight: 900; }
+.drawer-nav a:hover { background: #F0FDFA; color: #0B1220; transform: translateX(2px); }
+@media (max-width: 640px) {
+  .brand-mark { height: 38px; width: 38px; font-size: 18px; }
+  .brand-sub::before, .brand-sub::after { width: 28px; margin-inline: 7px; }
+}

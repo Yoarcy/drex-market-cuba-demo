@@ -8,10 +8,13 @@ export const metadata: Metadata = {
 };
 
 const nav = [
-  ["Inicio", "/"],
-  ["Catálogo", "/catalogo"],
-  ["Saldo DREX", "/saldo-drex"],
-  ["Mis pedidos", "/mis-pedidos"],
+  ["Home", "/"],
+  ["Catalog", "/catalogo"],
+  ["Cart", "/carrito"],
+  ["Saldo DREX / Wallet", "/saldo-drex"],
+  ["Orders", "/mis-pedidos"],
+  ["User/Login", "/login"],
+  ["Admin Panel", "/admin/login"],
 ];
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -19,24 +22,27 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="es">
       <body>
         <div className="min-h-screen bg-[linear-gradient(180deg,#F0FDFA_0%,#F6F8FB_38%,#FFFFFF_100%)] text-slate-900">
-          <header className="sticky top-0 z-50 min-h-[72px] border-b border-slate-200 bg-white/58 shadow-sm shadow-slate-900/5 backdrop-blur-2xl supports-[backdrop-filter]:bg-white/50">
-            <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 md:flex-row md:items-center md:justify-between lg:px-8">
-              <Link href="/" className="flex items-center gap-3">
-                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-sky-500 text-xl font-black text-white shadow-lg shadow-emerald-200">D</span>
-                <div>
-                  <p className="text-lg font-black tracking-tight">DREX Market Cuba</p>
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-600">Demo portfolio</p>
-                </div>
+          <header className="public-header sticky top-0 z-50 min-h-[72px] border-b border-slate-200 bg-white/58 shadow-sm shadow-slate-900/5 backdrop-blur-2xl supports-[backdrop-filter]:bg-white/50">
+            <input id="public-menu-toggle" type="checkbox" className="peer/public-menu hidden" />
+            <div className="mx-auto grid h-[72px] max-w-7xl grid-cols-[56px_1fr_56px] items-center px-4 lg:px-8">
+              <label htmlFor="public-menu-toggle" className="menu-trigger" aria-label="Abrir menú">
+                <span className="menu-icon" aria-hidden="true" />
+              </label>
+              <Link href="/" className="brand-center" aria-label="DREX Market Cuba Demo">
+                <span className="brand-mark">D</span>
+                <span className="brand-copy"><span className="brand-main"><strong>DREX</strong> Market</span><span className="brand-sub">Cuba Demo</span></span>
               </Link>
-              <nav className="flex flex-wrap items-center gap-2 text-sm font-bold text-slate-600">
-                {nav.map(([label, href]) => (
-                  <Link key={href} href={href} className="rounded-full px-4 py-2 transition hover:bg-emerald-50 hover:text-emerald-700">
-                    {label}
-                  </Link>
-                ))}
-                <Link href="/login" className="rounded-xl bg-orange-500 px-4 py-2 text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-0.5 hover:bg-orange-600">Entrar</Link>
-              </nav>
+              <Link href="/carrito" className="cart-shortcut" aria-label="Carrito">🛒</Link>
             </div>
+            <label htmlFor="public-menu-toggle" className="drawer-backdrop" aria-hidden="true" />
+            <aside className="public-drawer">
+              <div className="drawer-title"><span className="brand-mark small">D</span><div><strong>DREX Market</strong><p>Cuba Demo</p></div></div>
+              <nav className="drawer-nav">
+                {nav.map(([label, href], index) => (
+                  <Link key={href} href={href}><span>{String(index + 1).padStart(2, "0")}</span>{label}</Link>
+                ))}
+              </nav>
+            </aside>
           </header>
           <div className="bg-amber-50 px-4 py-2 text-center text-sm font-semibold text-amber-800">
             Modo demostración: no use datos reales, no hay pagos reales, productos ficticios y DemoPay simulado.
