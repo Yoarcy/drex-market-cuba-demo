@@ -527,3 +527,9 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 
 /* Menu click fix: trigger must stay clickable above drawer backdrop */
 .menu-trigger { position: relative !important; z-index: 52 !important; }
+
+
+/* Menu button same hover effect as header action buttons */
+.menu-trigger { transition: .18s !important; box-shadow: 0 10px 24px rgba(15,23,42,.08) !important; background: rgba(255,255,255,.76) !important; }
+.menu-trigger:hover { transform: translateY(-1px) !important; background: #F0FDFA !important; box-shadow: 0 12px 28px rgba(15,118,110,.16) !important; }
+.menu-trigger:active { transform: translateY(0) !important; }
