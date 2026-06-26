@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LocationModal } from "@/components/LocationModal";
+import { ProfileMenu } from "@/components/ProfileMenu";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -42,7 +43,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <Link href="/carrito" className="header-icon-link" aria-label="Carrito" data-tooltip="Carrito"><img src="/icons/03_cart.png" alt="Carrito" /></Link>
                 <Link href="/saldo-drex" className="header-icon-link" aria-label="Billetera virtual" data-tooltip="Billetera"><img src="/icons/04_wallet.png" alt="Billetera" /></Link>
                 <LocationModal />
-                <Link href="/login" className="header-icon-link" aria-label="Perfil o login" data-tooltip="Perfil"><img src="/icons/18_user_login.png" alt="Perfil" /></Link>
+                <ProfileMenu />
               </nav>
             </div>
             <label htmlFor="public-menu-toggle" className="drawer-backdrop" aria-hidden="true" />
