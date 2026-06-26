@@ -693,3 +693,10 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
   text-shadow: 0 1px 0 rgba(255,255,255,.65);
 }
 .header-icon-link[data-tooltip]::after { display: none !important; }
+
+
+/* Cart fade-in/fade-out transition */
+.truck-single-run { animation: singleCartDriveFade 12s linear infinite !important; opacity: 0; will-change: transform, opacity !important; }
+@keyframes singleCartDriveFade { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateX(calc(100vw - 125px)); opacity: 0; } }
+@media (max-width: 900px) { @keyframes singleCartDriveFade { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateX(calc(100vw - 105px)); opacity: 0; } } }
+@media (max-width: 650px) { @keyframes singleCartDriveFade { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateX(calc(100vw - 86px)); opacity: 0; } } }
