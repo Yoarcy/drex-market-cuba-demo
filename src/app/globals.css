@@ -672,3 +672,13 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 .location-form select { width: 100%; min-height: 46px; border: 1px solid #CBD5E1; border-radius: 12px; background: white; padding: 0 14px; font-size: 14px; color: #0B1220; outline: none; }
 .location-accept { display:flex; align-items:center; justify-content:center; width:100%; margin-top:4px; cursor:pointer; }
 @media (max-width: 640px) { .header-icon-link[data-tooltip]::before, .header-icon-link[data-tooltip]::after { display:none; } .location-modal-card { padding:22px; border-radius:22px; } }
+
+
+/* Location unavailable alert + validation */
+.location-alert { position: fixed; inset: 0; z-index: 13000; display: none; align-items: center; justify-content: center; padding: 18px; }
+.location-alert.open { display: flex; }
+.location-alert-card { position: relative; width: min(460px,94vw); border-radius: 26px; background: linear-gradient(180deg,#FFFFFF 0%,#FFF7ED 100%); border: 1px solid rgba(249,115,22,.25); box-shadow: 0 30px 90px rgba(15,23,42,.26); padding: 26px; text-align: center; }
+.location-alert-card h2 { font-size: 26px; margin: 0 0 10px; color: #0B1220; font-weight: 900; }
+.location-alert-card p { margin: 0 0 18px; color: #64748B; }
+.location-form select.invalid { border-color: #F97316 !important; box-shadow: 0 0 0 4px rgba(249,115,22,.16) !important; animation: fieldShake .28s ease; }
+@keyframes fieldShake { 0%,100% { transform: translateX(0); } 35% { transform: translateX(-3px); } 70% { transform: translateX(3px); } }
