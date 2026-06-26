@@ -594,3 +594,29 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
   .hero-shell > div, .hero-copy-card { min-height: auto !important; }
   .hero-copy-card { padding: 0 !important; }
 }
+
+
+/* Decorative broken delivery truck microanimation */
+.hero-truck-lane { position: relative; height: 80px; width: 100%; overflow: hidden; pointer-events: none; user-select: none; z-index: 2; margin: 0 0 4px; }
+.delivery-truck-run { --truck-size: 150px; position: absolute; left: 0; bottom: 0; width: var(--truck-size); height: var(--truck-size); animation: truckDrive 11s linear infinite; will-change: transform; }
+.delivery-truck-jerk { position: absolute; inset: 0; animation: truckJerk 2.7s linear infinite; will-change: transform; }
+.delivery-truck-jitter { position: absolute; inset: 0; animation: truckJitter .34s ease-in-out infinite; will-change: transform; }
+.delivery-truck { position: absolute; left: 0; bottom: -34px; width: var(--truck-size); height: var(--truck-size); z-index: 3; }
+.delivery-truck img, .truck-smoke, .truck-backfire { position: absolute; display: block; max-width: none; pointer-events: none; user-select: none; }
+.truck-body { inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 3; }
+.truck-cargo { inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 4; animation: cargoBounce .72s ease-in-out infinite; will-change: transform; }
+.truck-wheel { width: 26%; height: 26%; object-fit: contain; z-index: 5; animation: wheelSpin .78s linear infinite; will-change: transform; }
+.truck-wheel-back { left: 20.5%; top: 63.5%; }
+.truck-wheel-front { left: 59%; top: 63.5%; }
+.truck-smoke { width: 55%; height: 55%; object-fit: contain; left: -34%; bottom: -7px; z-index: 1; transform-origin: right center; animation: smokePuff 1.55s ease-out infinite; will-change: transform, opacity; }
+.truck-backfire { width: 42%; height: 42%; object-fit: contain; left: -25%; bottom: 11px; z-index: 2; transform-origin: right center; animation: backfireFlash 2.7s linear infinite; will-change: opacity, transform; }
+@keyframes truckDrive { from { transform: translateX(calc(-1 * var(--truck-size) - 20px)); } to { transform: translateX(calc(100vw + var(--truck-size))); } }
+@keyframes truckJitter { 0%,100% { transform: translateY(0); } 35% { transform: translateY(-1px); } 70% { transform: translateY(1.5px); } }
+@keyframes truckJerk { 0%,67%,72%,100% { transform: translateX(0); } 68.5% { transform: translateX(4px); } }
+@keyframes wheelSpin { to { transform: rotate(360deg); } }
+@keyframes cargoBounce { 0%,100% { transform: translateY(0) rotate(0); } 45% { transform: translateY(-3px) rotate(-1.5deg); } 70% { transform: translateY(1px) rotate(.8deg); } }
+@keyframes smokePuff { 0% { opacity: 0; transform: translateX(0) scale(.38); } 18% { opacity: .42; } 100% { opacity: 0; transform: translateX(-34px) scale(1.18); } }
+@keyframes backfireFlash { 0%,66%,72%,100% { opacity: 0; transform: scale(.65); } 67%,68.5% { opacity: .92; transform: scale(1); } }
+@media (max-width: 900px) { .delivery-truck-run { --truck-size: 120px; } .delivery-truck { bottom: -26px; } .hero-truck-lane { height: 72px; } .truck-smoke { bottom: -3px; } .truck-backfire { bottom: 10px; } }
+@media (max-width: 650px) { .delivery-truck-run { --truck-size: 90px; } .delivery-truck { bottom: -18px; } .hero-truck-lane { height: 58px; margin-bottom: 2px; } .truck-smoke { bottom: 1px; } .truck-backfire { bottom: 8px; } }
+@media (prefers-reduced-motion: reduce) { .delivery-truck-run { animation: truckDrive 22s linear infinite; } .delivery-truck-jerk, .delivery-truck-jitter, .truck-wheel, .truck-cargo, .truck-smoke, .truck-backfire { animation: none !important; } .truck-smoke, .truck-backfire { display: none !important; } }
