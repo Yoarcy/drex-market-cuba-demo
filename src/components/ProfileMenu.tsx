@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 
 type ViewMode = "menu" | "login" | "register" | "recover" | "profile";
 
-const avatarOptions = Array.from({ length: 10 }, (_, index) => `/avatars/avatar-${String(index + 1).padStart(2, "0")}.png`);
+const avatarOptions = Array.from({ length: 10 }, (_, index) => `/assets/avatares/avatar-${String(index + 1).padStart(2, "0")}.png`);
 
 export function ProfileMenu() {
   const [open, setOpen] = useState(false);
@@ -68,7 +68,7 @@ export function ProfileMenu() {
         data-tooltip="Perfil"
         onClick={() => openPanel()}
       >
-        {loggedIn && profile.photo ? <img src={profile.photo} alt="Perfil" className="profile-trigger-photo" /> : <img src="/icons/18_user_login.png" alt="Perfil" />}
+        {loggedIn && profile.photo ? <img src={profile.photo} alt="Perfil" className="profile-trigger-photo" /> : <img src="/assets/icons/18_user_login.png" alt="Perfil" />}
       </button>
 
       <div className={`profile-popover-layer ${open ? "open" : ""}`} aria-hidden={!open}>
@@ -78,7 +78,7 @@ export function ProfileMenu() {
 
           {view === "menu" && !loggedIn && (
             <div className="profile-menu-view">
-              <div className="profile-menu-icon"><img src="/icons/18_user_login.png" alt="" /></div>
+              <div className="profile-menu-icon"><img src="/assets/icons/18_user_login.png" alt="" /></div>
               <h2>Tu perfil</h2>
               <p>Inicia sesión para comprar, usar el carrito, elegir destino y guardar tus datos.</p>
               <button type="button" className="btn-primary profile-full-button" onClick={() => setView("login")}>Iniciar sesión</button>

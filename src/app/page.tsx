@@ -6,7 +6,7 @@ export default function Home() {
         <div className="hero-copy-card">
           <div className="yoa-cart-lane" aria-hidden="true">
             <div className="yoa-cart-run">
-              <img className="yoa-cart-img" src="/hero-truck/carr_transparent.png" alt="" />
+              <img className="yoa-cart-img" src="/assets/hero/truck/carr_transparent.png" alt="" />
             </div>
           </div>
           <h1 className="mt-5 max-w-3xl text-[34px] font-extrabold leading-[1.08] tracking-[-0.04em] text-slate-950 md:text-[52px] md:leading-[1.02]">
@@ -20,10 +20,10 @@ export default function Home() {
         <div className="demo-card hero-carousel-card overflow-hidden p-0">
           <div className="hero-carousel" aria-label="Tira automática de imágenes DREX Market">
             <div className="hero-carousel-track">
-              <img src="/hero-strip/hero-01.png" alt="DREX Market producto 1" />
-              <img src="/hero-strip/hero-02.png" alt="DREX Market producto 2" />
-              <img src="/hero-strip/hero-03.png" alt="DREX Market producto 3" />
-              <img src="/hero-strip/hero-04.png" alt="DREX Market producto 4" />
+              <img src="/assets/hero/hero-01.png" alt="DREX Market producto 1" />
+              <img src="/assets/hero/hero-02.png" alt="DREX Market producto 2" />
+              <img src="/assets/hero/hero-03.png" alt="DREX Market producto 3" />
+              <img src="/assets/hero/hero-04.png" alt="DREX Market producto 4" />
             </div>
             <div className="hero-carousel-dots"><span /><span /><span /><span /></div>
           </div>

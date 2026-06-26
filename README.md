@@ -55,7 +55,7 @@ El comprador y el beneficiario deben tener usuario y sesión iniciada para compl
 Carpeta local de trabajo para imágenes:
 
 ```txt
-D:\SOFTWARES_DREX_YOA\DREX_MARKET_CUBA_DEMO\imagenes-productos
+public/assets/
 ```
 
 Formato recomendado:

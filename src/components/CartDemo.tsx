@@ -53,7 +53,7 @@ export function CartDemo() {
   return (
     <div className="cart-page-shell">
       <section className="cart-hero-card">
-        <div className="cart-title-animation" aria-hidden="true"><img src="/hero-truck/carr_transparent.png" alt="" /></div>
+        <div className="cart-title-animation" aria-hidden="true"><img src="/assets/hero/truck/carr_transparent.png" alt="" /></div>
         <h1>Lista de la compra</h1>
         <p>Revisa productos, cantidades y peso estimado antes de confirmar el pedido. El peso define cuántas mensajerías se cobran.</p>
       </section>

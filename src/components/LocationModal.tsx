@@ -68,7 +68,7 @@ export function LocationModal() {
         data-tooltip={selectedLabel}
         onClick={() => setOpen(true)}
       >
-        <img src="/icons/06_ubicacion.png" alt="Ubicación" />
+        <img src="/assets/icons/06_ubicacion.png" alt="Ubicación" />
       </button>
 
       <div className={`location-modal ${open ? "open" : ""}`} aria-hidden={!open}>
