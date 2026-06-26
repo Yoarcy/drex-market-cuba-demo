@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 type ViewMode = "menu" | "login" | "register" | "recover" | "profile";
@@ -7,10 +8,12 @@ type ViewMode = "menu" | "login" | "register" | "recover" | "profile";
 const avatarOptions = Array.from({ length: 10 }, (_, index) => `/assets/avatares/avatar-${String(index + 1).padStart(2, "0")}.png`);
 
 export function ProfileMenu() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<ViewMode>("menu");
   const [loggedIn, setLoggedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [photoPickerOpen, setPhotoPickerOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [profile, setProfile] = useState({
@@ -39,7 +42,8 @@ export function ProfileMenu() {
 
   function register() {
     setLoggedIn(true);
-    setView("profile");
+    closePanel();
+    router.push("/");
   }
 
   function handlePhoto(event: React.ChangeEvent<HTMLInputElement>) {
@@ -89,10 +93,10 @@ export function ProfileMenu() {
           {view === "login" && (
             <form className="profile-form" onSubmit={(event) => { event.preventDefault(); login(); }}>
               <h2>Iniciar sesión</h2>
-              <label>Correo o usuario<input name="username" autoComplete="username" placeholder="cliente@demo.local" required /></label>
+              <label>Correo o usuario<input name="username" autoComplete="username" placeholder="cliente@demo.local" value={loginData.username} onChange={(event) => setLoginData((current) => ({ ...current, username: event.target.value }))} required /></label>
               <label>Contraseña
                 <span className="password-input-wrap">
-                  <input name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" placeholder="••••••••" required />
+                  <input name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" placeholder="••••••••" value={loginData.password} onChange={(event) => setLoginData((current) => ({ ...current, password: event.target.value }))} required />
                   <button type="button" className="password-eye-button" aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"} onMouseDown={(event) => event.preventDefault()} onClick={(event) => { event.preventDefault(); event.stopPropagation(); setShowPassword((value) => !value); }}>{showPassword ? "🙈" : "👁️"}</button>
                 </span>
               </label>
@@ -128,7 +132,7 @@ export function ProfileMenu() {
               </div>
               <label>Correo<input type="email" autoComplete="email" placeholder="cliente@correo.com" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} required /></label>
               <button type="submit" className="btn-primary profile-full-button">Registrarse</button>
-              <button type="button" className="profile-secondary-button" onClick={() => { closePanel(); window.location.href = "/"; }}>Volver al inicio</button>
+              <button type="button" className="profile-secondary-button" onClick={() => { closePanel(); router.push("/"); }}>Volver al inicio</button>
             </form>
           )}
 
