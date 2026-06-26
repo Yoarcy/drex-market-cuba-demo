@@ -14,6 +14,7 @@ export function ProfileMenu() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
+  const [loginError, setLoginError] = useState("");
   const [photoPickerOpen, setPhotoPickerOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [profile, setProfile] = useState({
@@ -36,6 +37,15 @@ export function ProfileMenu() {
   }
 
   function login() {
+    const validUsers = ["cliente@demo.local", "beneficiario@demo.local"];
+    const username = loginData.username.trim().toLowerCase();
+    const password = loginData.password;
+    if (!validUsers.includes(username) || password !== "demo123") {
+      setLoginError("No existe ese usuario o la contraseña es incorrecta.");
+      return;
+    }
+    setLoginError("");
+    setProfile((current) => ({ ...current, email: current.email || username }));
     setLoggedIn(true);
     setView("profile");
   }
@@ -60,7 +70,7 @@ export function ProfileMenu() {
   }
 
   function openFileSelector() {
-    fileInputRef.current?.click();
+    setTimeout(() => fileInputRef.current?.click(), 0);
   }
 
   return (
@@ -100,6 +110,7 @@ export function ProfileMenu() {
                   <button type="button" className="password-eye-button" aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"} onMouseDown={(event) => event.preventDefault()} onClick={(event) => { event.preventDefault(); event.stopPropagation(); setShowPassword((value) => !value); }}>{showPassword ? "🙈" : "👁️"}</button>
                 </span>
               </label>
+              {loginError && <div className="profile-error-message">{loginError}</div>}
               <button type="submit" className="btn-primary profile-full-button">Entrar</button>
               <button type="button" className="forgot-password-link" onClick={() => setView("recover")}>¿Olvidaste la contraseña?</button>
               <p className="profile-hot-question">¿No tienes cuenta? <button type="button" onClick={() => setView("register")}>Créala aquí</button></p>
@@ -139,7 +150,7 @@ export function ProfileMenu() {
           {view === "profile" && loggedIn && (
             <form className="profile-form" onSubmit={(event) => event.preventDefault()}>
               <div className="profile-user-head">
-                <div className="profile-user-photo">{profile.photo ? <img src={profile.photo} alt={displayName} /> : "👤"}</div>
+                <button type="button" className="profile-user-photo profile-user-photo-button" onClick={() => setPhotoPickerOpen(true)} aria-label="Cambiar foto de perfil">{profile.photo ? <img src={profile.photo} alt={displayName} /> : "👤"}</button>
                 <div><h2>{displayName}</h2><p>{profile.email || "correo pendiente"}</p></div>
               </div>
               <div className="profile-two-cols">
@@ -148,14 +159,11 @@ export function ProfileMenu() {
               </div>
               <label>Número de WhatsApp<input autoComplete="tel" value={profile.whatsapp} onChange={(e) => setProfile({ ...profile, whatsapp: e.target.value })} /></label>
               <label>Correo<input type="email" autoComplete="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} /></label>
-              <button type="button" className="profile-photo-box profile-photo-box-wide" onClick={() => setPhotoPickerOpen(true)}>
-                {profile.photo ? <img src={profile.photo} alt="Foto del usuario" /> : <span>Cambiar foto</span>}
-              </button>
               <button type="button" className="btn-primary profile-full-button" onClick={closePanel}>Guardar cambios</button>
             </form>
           )}
 
-          <input ref={fileInputRef} className="hidden" type="file" accept="image/png,image/jpeg,image/webp" onChange={handlePhoto} />
+          <input ref={fileInputRef} className="profile-hidden-file" type="file" accept="image/png,image/jpeg,image/webp" onChange={handlePhoto} />
           {photoPickerOpen && (
             <div className="avatar-picker-layer">
               <div className="avatar-picker-card">

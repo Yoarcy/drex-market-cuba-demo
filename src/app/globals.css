@@ -1046,3 +1046,9 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 .profile-photo-box { border: 2px dashed #99F6E4; }
 .profile-photo-box input[type="file"] { display: none; }
 @media (max-width: 480px) { .avatar-grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* Profile validation and hidden file input */
+.profile-error-message { border-radius: 14px; background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; padding: 10px 12px; font-size: 13px; font-weight: 900; }
+.profile-user-photo-button { border: 1px solid #CCFBF1; cursor: pointer; }
+.profile-user-photo-button:hover { box-shadow: 0 0 0 4px rgba(20,184,166,.14); }
+.profile-hidden-file { position: fixed; left: -9999px; top: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
