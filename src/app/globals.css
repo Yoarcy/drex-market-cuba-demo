@@ -1023,3 +1023,11 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 .profile-photo-box input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; padding: 0; min-height: 0; }
 .profile-photo-box-wide { min-height: 150px; }
 @media (max-width: 640px) { .profile-register-layout { grid-template-columns: 1fr; } .profile-photo-box { min-height: 170px; } }
+
+
+/* Password visibility control */
+.password-input-wrap { position: relative; display: block; }
+.password-input-wrap input { padding-right: 50px !important; }
+.password-eye-button { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 36px; height: 34px; border: 0; border-radius: 10px; background: #F0FDFA; cursor: pointer; font-size: 16px; }
+.profile-photo-box input[type="file"] { color: transparent; }
+.profile-photo-box input[type="file"]::file-selector-button { display: none; }

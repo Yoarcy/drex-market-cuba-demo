@@ -8,15 +8,16 @@ export function ProfileMenu() {
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<ViewMode>("menu");
   const [loggedIn, setLoggedIn] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [profile, setProfile] = useState({
-    firstName: "Cliente",
-    lastName: "Demo",
-    whatsapp: "+53 5000 0000",
-    email: "cliente@demo.local",
+    firstName: "",
+    lastName: "",
+    whatsapp: "",
+    email: "",
     photo: "",
   });
 
-  const displayName = `${profile.firstName} ${profile.lastName}`.trim();
+  const displayName = `${profile.firstName} ${profile.lastName}`.trim() || "Cliente DREX";
 
   function openPanel(nextView: ViewMode = loggedIn ? "profile" : "menu") {
     setView(nextView);
@@ -74,7 +75,12 @@ export function ProfileMenu() {
             <form className="profile-form" onSubmit={(event) => { event.preventDefault(); login(); }}>
               <h2>Iniciar sesión</h2>
               <label>Correo o usuario<input name="username" autoComplete="username" placeholder="cliente@demo.local" required /></label>
-              <label>Contraseña<input name="password" type="password" autoComplete="current-password" placeholder="••••••••" required /></label>
+              <label>Contraseña
+                <span className="password-input-wrap">
+                  <input name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" placeholder="••••••••" required />
+                  <button type="button" className="password-eye-button" aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"} onClick={() => setShowPassword((value) => !value)}>{showPassword ? "🙈" : "👁️"}</button>
+                </span>
+              </label>
               <button type="submit" className="btn-primary profile-full-button">Entrar</button>
               <button type="button" className="forgot-password-link" onClick={() => setView("recover")}>¿Olvidaste la contraseña?</button>
               <p className="profile-hot-question">¿No tienes cuenta? <button type="button" onClick={() => setView("register")}>Créala aquí</button></p>
@@ -97,16 +103,16 @@ export function ProfileMenu() {
               <h2>Crear cuenta</h2>
               <div className="profile-register-layout">
                 <div className="profile-register-left">
-                  <label>Nombre<input autoComplete="given-name" value={profile.firstName} onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} required /></label>
-                  <label>Apellidos<input autoComplete="family-name" value={profile.lastName} onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} required /></label>
-                  <label>WhatsApp<input autoComplete="tel" value={profile.whatsapp} onChange={(e) => setProfile({ ...profile, whatsapp: e.target.value })} required /></label>
+                  <label>Nombre<input autoComplete="given-name" placeholder="Nombre" value={profile.firstName} onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} required /></label>
+                  <label>Apellidos<input autoComplete="family-name" placeholder="Apellidos" value={profile.lastName} onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} required /></label>
+                  <label>WhatsApp<input autoComplete="tel" placeholder="+53 5000 0000" value={profile.whatsapp} onChange={(e) => setProfile({ ...profile, whatsapp: e.target.value })} required /></label>
                 </div>
                 <label className="profile-photo-box">
                   {profile.photo ? <img src={profile.photo} alt="Foto del usuario" /> : <span>imagen</span>}
                   <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handlePhoto} />
                 </label>
               </div>
-              <label>Correo<input type="email" autoComplete="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} required /></label>
+              <label>Correo<input type="email" autoComplete="email" placeholder="cliente@correo.com" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} required /></label>
               <button type="submit" className="btn-primary profile-full-button">Registrarse</button>
               <button type="button" className="profile-secondary-button" onClick={() => { closePanel(); window.location.href = "/"; }}>Volver al inicio</button>
             </form>
@@ -116,7 +122,7 @@ export function ProfileMenu() {
             <form className="profile-form" onSubmit={(event) => event.preventDefault()}>
               <div className="profile-user-head">
                 <div className="profile-user-photo">{profile.photo ? <img src={profile.photo} alt={displayName} /> : "👤"}</div>
-                <div><h2>{displayName}</h2><p>{profile.email}</p></div>
+                <div><h2>{displayName}</h2><p>{profile.email || "correo pendiente"}</p></div>
               </div>
               <div className="profile-two-cols">
                 <label>Nombre<input value={profile.firstName} disabled /></label>
