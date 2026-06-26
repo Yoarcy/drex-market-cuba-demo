@@ -1,14 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type ViewMode = "menu" | "login" | "register" | "recover" | "profile";
+
+const avatarOptions = Array.from({ length: 10 }, (_, index) => `/avatars/avatar-${String(index + 1).padStart(2, "0")}.png`);
 
 export function ProfileMenu() {
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<ViewMode>("menu");
   const [loggedIn, setLoggedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [photoPickerOpen, setPhotoPickerOpen] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [profile, setProfile] = useState({
     firstName: "",
     lastName: "",
@@ -42,6 +46,17 @@ export function ProfileMenu() {
     const file = event.target.files?.[0];
     if (!file) return;
     setProfile((current) => ({ ...current, photo: URL.createObjectURL(file) }));
+    setPhotoPickerOpen(false);
+    event.target.value = "";
+  }
+
+  function selectAvatar(src: string) {
+    setProfile((current) => ({ ...current, photo: src }));
+    setPhotoPickerOpen(false);
+  }
+
+  function openFileSelector() {
+    fileInputRef.current?.click();
   }
 
   return (
@@ -78,7 +93,7 @@ export function ProfileMenu() {
               <label>Contraseña
                 <span className="password-input-wrap">
                   <input name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" placeholder="••••••••" required />
-                  <button type="button" className="password-eye-button" aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"} onClick={() => setShowPassword((value) => !value)}>{showPassword ? "🙈" : "👁️"}</button>
+                  <button type="button" className="password-eye-button" aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"} onMouseDown={(event) => event.preventDefault()} onClick={(event) => { event.preventDefault(); event.stopPropagation(); setShowPassword((value) => !value); }}>{showPassword ? "🙈" : "👁️"}</button>
                 </span>
               </label>
               <button type="submit" className="btn-primary profile-full-button">Entrar</button>
@@ -107,10 +122,9 @@ export function ProfileMenu() {
                   <label>Apellidos<input autoComplete="family-name" placeholder="Apellidos" value={profile.lastName} onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} required /></label>
                   <label>WhatsApp<input autoComplete="tel" placeholder="+53 5000 0000" value={profile.whatsapp} onChange={(e) => setProfile({ ...profile, whatsapp: e.target.value })} required /></label>
                 </div>
-                <label className="profile-photo-box">
+                <button type="button" className="profile-photo-box" onClick={() => setPhotoPickerOpen(true)}>
                   {profile.photo ? <img src={profile.photo} alt="Foto del usuario" /> : <span>imagen</span>}
-                  <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handlePhoto} />
-                </label>
+                </button>
               </div>
               <label>Correo<input type="email" autoComplete="email" placeholder="cliente@correo.com" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} required /></label>
               <button type="submit" className="btn-primary profile-full-button">Registrarse</button>
@@ -130,12 +144,32 @@ export function ProfileMenu() {
               </div>
               <label>Número de WhatsApp<input autoComplete="tel" value={profile.whatsapp} onChange={(e) => setProfile({ ...profile, whatsapp: e.target.value })} /></label>
               <label>Correo<input type="email" autoComplete="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} /></label>
-              <label className="profile-photo-box profile-photo-box-wide">
+              <button type="button" className="profile-photo-box profile-photo-box-wide" onClick={() => setPhotoPickerOpen(true)}>
                 {profile.photo ? <img src={profile.photo} alt="Foto del usuario" /> : <span>Cambiar foto</span>}
-                <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handlePhoto} />
-              </label>
+              </button>
               <button type="button" className="btn-primary profile-full-button" onClick={closePanel}>Guardar cambios</button>
             </form>
+          )}
+
+          <input ref={fileInputRef} className="hidden" type="file" accept="image/png,image/jpeg,image/webp" onChange={handlePhoto} />
+          {photoPickerOpen && (
+            <div className="avatar-picker-layer">
+              <div className="avatar-picker-card">
+                <button type="button" className="avatar-picker-close" aria-label="Cerrar selector de imagen" onClick={() => setPhotoPickerOpen(false)}>×</button>
+                <h3>Foto de perfil</h3>
+                <p>Escoge un avatar DREX o sube una imagen desde tu equipo.</p>
+                <div className="avatar-picker-actions">
+                  <button type="button" className="profile-secondary-button" onClick={openFileSelector}>Imagen de archivo</button>
+                </div>
+                <div className="avatar-grid">
+                  {avatarOptions.map((avatar) => (
+                    <button type="button" key={avatar} className="avatar-option" onClick={() => selectAvatar(avatar)}>
+                      <img src={avatar} alt="Avatar DREX" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
           )}
         </section>
       </div>

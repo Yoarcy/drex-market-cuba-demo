@@ -1031,3 +1031,18 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 .password-eye-button { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 36px; height: 34px; border: 0; border-radius: 10px; background: #F0FDFA; cursor: pointer; font-size: 16px; }
 .profile-photo-box input[type="file"] { color: transparent; }
 .profile-photo-box input[type="file"]::file-selector-button { display: none; }
+
+/* Avatar picker */
+.avatar-picker-layer { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(15,23,42,.18); backdrop-filter: blur(4px); }
+.avatar-picker-card { position: relative; width: 100%; max-width: 380px; max-height: min(580px, 82vh); overflow: auto; border-radius: 24px; background: white; border: 1px solid #CCFBF1; box-shadow: 0 24px 70px rgba(15,23,42,.24); padding: 20px; }
+.avatar-picker-close { position: absolute; right: 12px; top: 10px; width: 34px; height: 34px; border: 0; border-radius: 12px; background: #F8FAFC; color: #0F172A; font-size: 22px; font-weight: 950; cursor: pointer; }
+.avatar-picker-card h3 { margin: 0 40px 6px 0; font-size: 24px; font-weight: 950; color: #0B1220; }
+.avatar-picker-card p { margin: 0 0 14px; color: #64748B; font-size: 14px; }
+.avatar-picker-actions { display: grid; margin-bottom: 14px; }
+.avatar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.avatar-option { aspect-ratio: 1; border: 1px solid #CCFBF1; border-radius: 18px; background: #F0FDFA; overflow: hidden; cursor: pointer; padding: 4px; }
+.avatar-option:hover { border-color: #14B8A6; transform: translateY(-1px); }
+.avatar-option img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; }
+.profile-photo-box { border: 2px dashed #99F6E4; }
+.profile-photo-box input[type="file"] { display: none; }
+@media (max-width: 480px) { .avatar-grid { grid-template-columns: repeat(3, 1fr); } }
