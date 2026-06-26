@@ -707,3 +707,14 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 @keyframes singleCartDriveFadeClean { 0% { transform: translateX(-70px); opacity: 0; } 3% { opacity: 1; } 82% { opacity: 1; } 100% { transform: translateX(calc(100vw - 55px)); opacity: 0; } }
 @media (max-width: 900px) { @keyframes singleCartDriveFadeClean { 0% { transform: translateX(-58px); opacity: 0; } 3% { opacity: 1; } 82% { opacity: 1; } 100% { transform: translateX(calc(100vw - 46px)); opacity: 0; } } }
 @media (max-width: 650px) { @keyframes singleCartDriveFadeClean { 0% { transform: translateX(-48px); opacity: 0; } 3% { opacity: 1; } 82% { opacity: 1; } 100% { transform: translateX(calc(100vw - 38px)); opacity: 0; } } }
+
+
+/* FINAL cart fix: always visible + simple movement */
+.hero-truck-lane { height: 62px !important; overflow: hidden !important; position: relative !important; }
+.truck-single-run { display: block !important; opacity: 1 !important; visibility: visible !important; position: absolute !important; left: 0 !important; bottom: 4px !important; width: 125px !important; animation: cartVisibleDrive 12s linear infinite !important; will-change: transform !important; z-index: 10 !important; }
+.truck-single-img { display: block !important; opacity: 1 !important; visibility: visible !important; width: 125px !important; height: auto !important; animation: cartTinyShake .34s ease-in-out infinite !important; will-change: transform !important; }
+@keyframes cartVisibleDrive { 0% { transform: translateX(0); opacity: 1; } 86% { opacity: 1; } 100% { transform: translateX(calc(100vw - 125px)); opacity: 0; } }
+@keyframes cartTinyShake { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-1px) rotate(.25deg); } }
+@media (max-width: 900px) { .truck-single-run, .truck-single-img { width: 105px !important; } @keyframes cartVisibleDrive { 0% { transform: translateX(0); opacity: 1; } 86% { opacity: 1; } 100% { transform: translateX(calc(100vw - 105px)); opacity: 0; } } }
+@media (max-width: 650px) { .hero-truck-lane { height: 46px !important; } .truck-single-run, .truck-single-img { width: 86px !important; } @keyframes cartVisibleDrive { 0% { transform: translateX(0); opacity: 1; } 86% { opacity: 1; } 100% { transform: translateX(calc(100vw - 86px)); opacity: 0; } } }
+@media (prefers-reduced-motion: reduce) { .truck-single-run { opacity: 1 !important; animation: none !important; transform: translateX(0) !important; } .truck-single-img { opacity: 1 !important; animation: none !important; } }
