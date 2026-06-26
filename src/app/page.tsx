@@ -6,19 +6,13 @@ export default function Home() {
       <section className="hero-shell relative overflow-hidden px-4 py-14 md:py-[76px] lg:px-8"><div className="pointer-events-none absolute left-0 top-0 h-80 w-80 rounded-full bg-teal-300/20 blur-3xl"/><div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-orange-300/20 blur-3xl"/><div className="relative mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.05fr_0.95fr] md:items-center">
         <div className="hero-copy-card">
           <div className="hero-truck-lane" aria-hidden="true">
-            <div className="delivery-truck-run">
-              <div className="delivery-truck-jerk">
-                <div className="delivery-truck-jitter">
-                  <img className="truck-smoke" src="/hero-truck/03_smoke_corrected.png" alt="" />
-                  <img className="truck-backfire" src="/hero-truck/04_backfire_corrected.png" alt="" />
-                  <div className="delivery-truck">
-                    <img className="truck-body" src="/hero-truck/01_truck_body.png" alt="" />
-                    <img className="truck-cargo" src="/hero-truck/05_cargo.png" alt="" />
-                    <img className="truck-wheel truck-wheel-front" src="/hero-truck/02_wheel.png" alt="" />
-                    <img className="truck-wheel truck-wheel-back" src="/hero-truck/02_wheel.png" alt="" />
-                  </div>
-                </div>
-              </div>
+            <div className="truck-rig">
+              <img className="truck-part truck-smoke" src="/hero-truck/optimized/03_smoke_corrected.png" alt="" />
+              <img className="truck-part truck-backfire" src="/hero-truck/optimized/04_backfire_corrected.png" alt="" />
+              <img className="truck-part truck-body" src="/hero-truck/optimized/01_truck_body.png" alt="" />
+              <img className="truck-part truck-cargo" src="/hero-truck/optimized/05_cargo.png" alt="" />
+              <img className="truck-part truck-wheel truck-wheel-back" src="/hero-truck/optimized/02_wheel.png" alt="" />
+              <img className="truck-part truck-wheel truck-wheel-front" src="/hero-truck/optimized/02_wheel.png" alt="" />
             </div>
           </div>
           <h1 className="mt-5 max-w-3xl text-[34px] font-extrabold leading-[1.08] tracking-[-0.04em] text-slate-950 md:text-[52px] md:leading-[1.02]">
