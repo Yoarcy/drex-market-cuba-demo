@@ -678,3 +678,15 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 @media (prefers-reduced-motion: reduce) {
   .hero-cart-run { animation: none !important; transform: translateX(0) !important; }
 }
+
+
+/* RESTORED working cart animation from 9b36d7b */
+.hero-truck-lane { position: relative !important; height: 62px !important; width: 100% !important; overflow: hidden !important; pointer-events: none !important; user-select: none !important; z-index: 2 !important; margin: 0 0 6px !important; }
+.truck-single-run { position: absolute !important; left: 0 !important; bottom: 4px !important; width: 125px !important; animation: singleCartDrive 12s linear infinite !important; will-change: transform !important; opacity: 1 !important; visibility: visible !important; display: block !important; }
+.truck-single-img { display: block !important; width: 125px !important; height: auto !important; object-fit: contain !important; animation: singleCartVibration .34s ease-in-out infinite !important; will-change: transform !important; pointer-events: none !important; user-select: none !important; opacity: 1 !important; visibility: visible !important; }
+.truck-rig, .delivery-truck-run, .hero-cart-run, .hero-cart-img { display: none !important; }
+@keyframes singleCartDrive { from { transform: translateX(-145px); } to { transform: translateX(calc(100vw + 145px)); } }
+@keyframes singleCartVibration { 0%,100% { transform: translateY(0) rotate(0deg); } 35% { transform: translateY(-1px) rotate(-.35deg); } 70% { transform: translateY(1px) rotate(.35deg); } }
+@media (max-width: 900px) { .hero-truck-lane { height: 54px !important; } .truck-single-run, .truck-single-img { width: 105px !important; } @keyframes singleCartDrive { from { transform: translateX(-125px); } to { transform: translateX(calc(100vw + 125px)); } } }
+@media (max-width: 650px) { .hero-truck-lane { height: 46px !important; } .truck-single-run, .truck-single-img { width: 86px !important; } @keyframes singleCartDrive { from { transform: translateX(-105px); } to { transform: translateX(calc(100vw + 105px)); } } }
+@media (prefers-reduced-motion: reduce) { .truck-single-run { animation: singleCartDrive 24s linear infinite !important; } .truck-single-img { animation: none !important; } }

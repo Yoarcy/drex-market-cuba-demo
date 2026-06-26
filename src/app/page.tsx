@@ -5,8 +5,8 @@ export default function Home() {
       <section className="hero-shell relative overflow-hidden px-4 py-14 md:py-[76px] lg:px-8"><div className="pointer-events-none absolute left-0 top-0 h-80 w-80 rounded-full bg-teal-300/20 blur-3xl"/><div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-orange-300/20 blur-3xl"/><div className="relative mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.05fr_0.95fr] md:items-center">
         <div className="hero-copy-card">
           <div className="hero-truck-lane" aria-hidden="true">
-            <div className="hero-cart-run">
-              <img className="hero-cart-img" src="/hero-truck/carr_transparent.png" alt="" />
+            <div className="truck-single-run">
+              <img className="truck-single-img" src="/hero-truck/carr_transparent.png" alt="" />
             </div>
           </div>
           <h1 className="mt-5 max-w-3xl text-[34px] font-extrabold leading-[1.08] tracking-[-0.04em] text-slate-950 md:text-[52px] md:leading-[1.02]">
