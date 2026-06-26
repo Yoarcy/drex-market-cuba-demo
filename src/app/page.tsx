@@ -5,7 +5,6 @@ export default function Home() {
     <main>
       <section className="hero-shell relative overflow-hidden px-4 py-14 md:py-[76px] lg:px-8"><div className="pointer-events-none absolute left-0 top-0 h-80 w-80 rounded-full bg-teal-300/20 blur-3xl"/><div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-full bg-orange-300/20 blur-3xl"/><div className="relative mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.05fr_0.95fr] md:items-center">
         <div className="hero-copy-card">
-          <span className="badge-demo">Marketplace hiperlocal · Artemisa / Bauta</span>
           <h1 className="mt-5 max-w-3xl text-[34px] font-extrabold leading-[1.08] tracking-[-0.04em] text-slate-950 md:text-[52px] md:leading-[1.02]">
             Compra demo para familiares en Cuba con proveedores y reparto por municipio.
           </h1>
