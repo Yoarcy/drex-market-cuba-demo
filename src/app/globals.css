@@ -567,3 +567,30 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 @media (max-width: 650px) {
   .hero-copy-card { min-height: auto !important; padding: 24px !important; }
 }
+
+
+/* Final hero outer container: rounded compact green area; text transparent */
+.hero-shell {
+  margin: 18px auto 0 !important;
+  max-width: 1200px !important;
+  border-radius: 28px !important;
+  padding: 26px 28px !important;
+  overflow: hidden !important;
+  min-height: auto !important;
+  background: radial-gradient(circle at top left,rgba(20,184,166,.18),transparent 34%), radial-gradient(circle at top right,rgba(249,115,22,.10),transparent 28%), linear-gradient(180deg,#F0FDFA 0%,#FFFFFF 100%) !important;
+  box-shadow: 0 18px 55px rgba(15,23,42,.08) !important;
+}
+.hero-shell > div { min-height: 410px !important; }
+.hero-copy-card {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 22px 0 0 !important;
+  border-radius: 0 !important;
+  min-height: 410px !important;
+}
+@media (max-width: 650px) {
+  .hero-shell { padding: 18px !important; border-radius: 22px !important; }
+  .hero-shell > div, .hero-copy-card { min-height: auto !important; }
+  .hero-copy-card { padding: 0 !important; }
+}
