@@ -5,9 +5,22 @@ import { useState } from "react";
 const availableMunicipalities = new Set(["Bauta"]);
 
 const municipalitiesByProvince: Record<string, string[]> = {
-  Artemisa: ["Bauta", "Artemisa", "Guanajay", "Caimito", "Bahía Honda", "San Cristóbal"],
-  "La Habana": ["Playa", "Plaza de la Revolución", "Centro Habana", "Habana Vieja", "Diez de Octubre", "Boyeros"],
-  Mayabeque: ["San José de las Lajas", "Güines", "Santa Cruz del Norte", "Madruga", "Jaruco", "Bejucal"],
+  "Pinar del Río": ["Pinar del Río", "Consolación del Sur", "Guane", "La Palma", "Los Palacios", "Mantua", "Minas de Matahambre", "San Juan y Martínez", "San Luis", "Sandino", "Viñales"],
+  "Artemisa": ["Artemisa", "Alquízar", "Bahía Honda", "Bauta", "Caimito", "Candelaria", "Guanajay", "Güira de Melena", "Mariel", "San Antonio de los Baños", "San Cristóbal"],
+  "La Habana": ["Arroyo Naranjo", "Boyeros", "Centro Habana", "Cerro", "Cotorro", "Diez de Octubre", "Guanabacoa", "Habana del Este", "Habana Vieja", "La Lisa", "Marianao", "Playa", "Plaza de la Revolución", "Regla", "San Miguel del Padrón"],
+  "Mayabeque": ["Batabanó", "Bejucal", "Güines", "Jaruco", "Madruga", "Melena del Sur", "Nueva Paz", "Quivicán", "San José de las Lajas", "San Nicolás", "Santa Cruz del Norte"],
+  "Matanzas": ["Matanzas", "Calimete", "Cárdenas", "Ciénaga de Zapata", "Colón", "Jagüey Grande", "Jovellanos", "Limonar", "Los Arabos", "Martí", "Pedro Betancourt", "Perico", "Unión de Reyes"],
+  "Cienfuegos": ["Cienfuegos", "Abreus", "Aguada de Pasajeros", "Cruces", "Cumanayagua", "Lajas", "Palmira", "Rodas"],
+  "Villa Clara": ["Santa Clara", "Caibarién", "Camajuaní", "Cifuentes", "Corralillo", "Encrucijada", "Manicaragua", "Placetas", "Quemado de Güines", "Ranchuelo", "Remedios", "Sagua la Grande", "Santo Domingo"],
+  "Sancti Spíritus": ["Sancti Spíritus", "Cabaiguán", "Fomento", "Jatibonico", "La Sierpe", "Taguasco", "Trinidad", "Yaguajay"],
+  "Ciego de Ávila": ["Ciego de Ávila", "Baraguá", "Bolivia", "Chambas", "Ciro Redondo", "Florencia", "Majagua", "Morón", "Primero de Enero", "Venezuela"],
+  "Camagüey": ["Camagüey", "Carlos Manuel de Céspedes", "Esmeralda", "Florida", "Guáimaro", "Jimaguayú", "Minas", "Najasa", "Nuevitas", "Santa Cruz del Sur", "Sibanicú", "Sierra de Cubitas", "Vertientes"],
+  "Las Tunas": ["Las Tunas", "Amancio", "Colombia", "Jesús Menéndez", "Jobabo", "Majibacoa", "Manatí", "Puerto Padre"],
+  "Holguín": ["Holguín", "Antilla", "Báguanos", "Banes", "Cacocum", "Calixto García", "Cueto", "Frank País", "Gibara", "Mayarí", "Moa", "Rafael Freyre", "Sagua de Tánamo", "Urbano Noris"],
+  "Granma": ["Bayamo", "Bartolomé Masó", "Buey Arriba", "Campechuela", "Cauto Cristo", "Guisa", "Jiguaní", "Manzanillo", "Media Luna", "Niquero", "Pilón", "Río Cauto", "Yara"],
+  "Santiago de Cuba": ["Santiago de Cuba", "Contramaestre", "Guamá", "Mella", "Palma Soriano", "San Luis", "Segundo Frente", "Songo-La Maya", "Tercer Frente"],
+  "Guantánamo": ["Guantánamo", "Baracoa", "Caimanera", "El Salvador", "Imías", "Maisí", "Manuel Tames", "Niceto Pérez", "San Antonio del Sur", "Yateras"],
+  "Isla de la Juventud": ["Isla de la Juventud"],
 };
 
 export function LocationModal() {
@@ -77,9 +90,22 @@ export function LocationModal() {
                 }}
               >
                 <option value="">Selecciona provincia</option>
+                <option value="Pinar del Río">Pinar del Río</option>
                 <option value="Artemisa">Artemisa</option>
                 <option value="La Habana">La Habana</option>
                 <option value="Mayabeque">Mayabeque</option>
+                <option value="Matanzas">Matanzas</option>
+                <option value="Cienfuegos">Cienfuegos</option>
+                <option value="Villa Clara">Villa Clara</option>
+                <option value="Sancti Spíritus">Sancti Spíritus</option>
+                <option value="Ciego de Ávila">Ciego de Ávila</option>
+                <option value="Camagüey">Camagüey</option>
+                <option value="Las Tunas">Las Tunas</option>
+                <option value="Holguín">Holguín</option>
+                <option value="Granma">Granma</option>
+                <option value="Santiago de Cuba">Santiago de Cuba</option>
+                <option value="Guantánamo">Guantánamo</option>
+                <option value="Isla de la Juventud">Isla de la Juventud</option>
               </select>
             </label>
             <label>

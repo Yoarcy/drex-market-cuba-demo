@@ -700,3 +700,10 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 @keyframes singleCartDriveFade { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateX(calc(100vw - 125px)); opacity: 0; } }
 @media (max-width: 900px) { @keyframes singleCartDriveFade { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateX(calc(100vw - 105px)); opacity: 0; } } }
 @media (max-width: 650px) { @keyframes singleCartDriveFade { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateX(calc(100vw - 86px)); opacity: 0; } } }
+
+
+/* Cart fade timing refinement */
+.truck-single-run { animation: singleCartDriveFadeClean 12s linear infinite !important; opacity: 0; }
+@keyframes singleCartDriveFadeClean { 0% { transform: translateX(-70px); opacity: 0; } 3% { opacity: 1; } 82% { opacity: 1; } 100% { transform: translateX(calc(100vw - 55px)); opacity: 0; } }
+@media (max-width: 900px) { @keyframes singleCartDriveFadeClean { 0% { transform: translateX(-58px); opacity: 0; } 3% { opacity: 1; } 82% { opacity: 1; } 100% { transform: translateX(calc(100vw - 46px)); opacity: 0; } } }
+@media (max-width: 650px) { @keyframes singleCartDriveFadeClean { 0% { transform: translateX(-48px); opacity: 0; } 3% { opacity: 1; } 82% { opacity: 1; } 100% { transform: translateX(calc(100vw - 38px)); opacity: 0; } } }
