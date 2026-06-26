@@ -994,3 +994,7 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 .profile-user-head h2 { margin: 0 0 2px; }
 .profile-user-head p { margin: 0; color: #0F766E; font-weight: 850; }
 @media (max-width: 640px) { .profile-popover-layer { align-items: center; justify-content: center; padding: 18px; } .profile-popover { padding: 22px; border-radius: 22px; } .profile-two-cols { grid-template-columns: 1fr; } }
+
+
+/* Forgot password link */
+.forgot-password-link { border: 0; background: transparent; color: #0F766E; font-weight: 900; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
