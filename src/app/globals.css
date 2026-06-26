@@ -654,3 +654,21 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 @media (max-width: 900px) { .hero-truck-lane { height: 54px !important; } .truck-single-run, .truck-single-img { width: 105px !important; } @keyframes singleCartDrive { from { transform: translateX(-125px); } to { transform: translateX(calc(100vw + 125px)); } } }
 @media (max-width: 650px) { .hero-truck-lane { height: 46px !important; } .truck-single-run, .truck-single-img { width: 86px !important; } @keyframes singleCartDrive { from { transform: translateX(-105px); } to { transform: translateX(calc(100vw + 105px)); } } }
 @media (prefers-reduced-motion: reduce) { .truck-single-run { animation: singleCartDrive 24s linear infinite !important; } .truck-single-img { animation: none !important; } }
+
+
+/* Header icon tooltips + location modal */
+.header-icon-link { position: relative !important; border: 1px solid rgba(15,23,42,.08) !important; font: inherit !important; cursor: pointer !important; }
+.header-icon-link[data-tooltip]::before { content: attr(data-tooltip); position: absolute; left: 50%; top: calc(100% + 10px); z-index: 10001; transform: translate(-50%,-4px); opacity: 0; pointer-events: none; white-space: nowrap; border-radius: 999px; background: #0F172A; color: white; padding: 6px 10px; font-size: 12px; font-weight: 850; box-shadow: 0 12px 28px rgba(15,23,42,.22); transition: .18s; }
+.header-icon-link[data-tooltip]::after { content: ""; position: absolute; left: 50%; top: calc(100% + 4px); z-index: 10001; transform: translate(-50%,-4px); opacity: 0; pointer-events: none; border: 6px solid transparent; border-bottom-color: #0F172A; transition: .18s; }
+.header-icon-link[data-tooltip]:hover::before, .header-icon-link[data-tooltip]:hover::after { opacity: 1; transform: translate(-50%,0); }
+.location-modal { position: fixed; inset: 0; z-index: 12000; display: none; align-items: center; justify-content: center; padding: 18px; }
+.location-modal-toggle:checked ~ .location-modal { display: flex; }
+.location-modal-backdrop { position: absolute; inset: 0; background: rgba(15,23,42,.46); backdrop-filter: blur(8px); cursor: pointer; }
+.location-modal-card { position: relative; width: min(520px,94vw); border-radius: 28px; background: linear-gradient(180deg,#FFFFFF 0%,#F0FDFA 100%); border: 1px solid rgba(20,184,166,.24); box-shadow: 0 30px 90px rgba(15,23,42,.26); padding: 28px; overflow: hidden; }
+.location-modal-card::before { content: ""; position: absolute; right: -80px; top: -80px; width: 190px; height: 190px; border-radius: 999px; background: rgba(20,184,166,.16); }
+.location-close { position: absolute; right: 16px; top: 14px; width: 38px; height: 38px; display:flex; align-items:center; justify-content:center; border-radius: 14px; background: white; color: #0F172A; font-size: 26px; font-weight: 800; box-shadow: 0 10px 24px rgba(15,23,42,.10); cursor: pointer; }
+.location-form { display: grid; gap: 14px; margin: 18px 0; }
+.location-form label { display: grid; gap: 7px; color: #334155; font-size: 13px; font-weight: 850; }
+.location-form select { width: 100%; min-height: 46px; border: 1px solid #CBD5E1; border-radius: 12px; background: white; padding: 0 14px; font-size: 14px; color: #0B1220; outline: none; }
+.location-accept { display:flex; align-items:center; justify-content:center; width:100%; margin-top:4px; cursor:pointer; }
+@media (max-width: 640px) { .header-icon-link[data-tooltip]::before, .header-icon-link[data-tooltip]::after { display:none; } .location-modal-card { padding:22px; border-radius:22px; } }

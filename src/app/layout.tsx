@@ -29,6 +29,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <div className="min-h-screen bg-[linear-gradient(180deg,#F0FDFA_0%,#F6F8FB_38%,#FFFFFF_100%)] text-slate-900">
           <header className="public-header sticky top-0 z-50 min-h-[72px] border-b border-slate-200 bg-white/58 shadow-sm shadow-slate-900/5 backdrop-blur-2xl supports-[backdrop-filter]:bg-white/50">
             <input id="public-menu-toggle" type="checkbox" className="peer/public-menu hidden" />
+            <input id="location-modal-toggle" type="checkbox" className="location-modal-toggle hidden" />
             <div className="mx-auto grid h-[72px] max-w-7xl grid-cols-[56px_1fr_56px] items-center px-4 lg:px-8">
               <label htmlFor="public-menu-toggle" className="menu-trigger" aria-label="Abrir menú">
                 <span className="menu-icon" aria-hidden="true" />
@@ -38,10 +39,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <span className="brand-text-lockup"><span className="brand-line"><b>DREX</b><strong>Market</strong></span><span className="brand-subline">Cuba Demo</span></span>
               </Link>
               <nav className="header-actions" aria-label="Accesos rápidos">
-                <Link href="/carrito" className="header-icon-link" aria-label="Carrito"><img src="/icons/03_cart.png" alt="Carrito" /></Link>
-                <Link href="/saldo-drex" className="header-icon-link" aria-label="Billetera virtual"><img src="/icons/04_wallet.png" alt="Billetera" /></Link>
-                <Link href="/#ubicacion" className="header-icon-link" aria-label="Municipio del beneficiario"><img src="/icons/06_ubicacion.png" alt="Ubicación" /></Link>
-                <Link href="/login" className="header-icon-link" aria-label="Perfil o login"><img src="/icons/18_user_login.png" alt="Perfil" /></Link>
+                <Link href="/carrito" className="header-icon-link" aria-label="Carrito" data-tooltip="Carrito"><img src="/icons/03_cart.png" alt="Carrito" /></Link>
+                <Link href="/saldo-drex" className="header-icon-link" aria-label="Billetera virtual" data-tooltip="Billetera"><img src="/icons/04_wallet.png" alt="Billetera" /></Link>
+                <label htmlFor="location-modal-toggle" className="header-icon-link" aria-label="Municipio del beneficiario" data-tooltip="Ubicación"><img src="/icons/06_ubicacion.png" alt="Ubicación" /></label>
+                <Link href="/login" className="header-icon-link" aria-label="Perfil o login" data-tooltip="Perfil"><img src="/icons/18_user_login.png" alt="Perfil" /></Link>
               </nav>
             </div>
             <label htmlFor="public-menu-toggle" className="drawer-backdrop" aria-hidden="true" />
@@ -54,6 +55,21 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               </nav>
             </aside>
           </header>
+
+          <div className="location-modal">
+            <label htmlFor="location-modal-toggle" className="location-modal-backdrop" aria-hidden="true" />
+            <section className="location-modal-card" role="dialog" aria-modal="true" aria-labelledby="locationTitle">
+              <label htmlFor="location-modal-toggle" className="location-close" aria-label="Cerrar">×</label>
+              <span className="badge-demo">Destino del pedido</span>
+              <h2 id="locationTitle" className="mt-3 text-2xl font-black text-slate-950">¿Hacia dónde va la compra?</h2>
+              <p className="mt-2 text-slate-600">Selecciona provincia y municipio del beneficiario. La tienda usará esta ubicación para mostrar productos disponibles en esa zona.</p>
+              <div className="location-form">
+                <label>Provincia<select defaultValue="Artemisa"><option>Artemisa</option><option>La Habana</option><option>Mayabeque</option></select></label>
+                <label>Municipio<select defaultValue="Bauta"><option>Bauta</option><option>Artemisa</option><option>Guanajay</option><option>Caimito</option><option>Bahía Honda</option><option>San Cristóbal</option></select></label>
+              </div>
+              <label htmlFor="location-modal-toggle" className="btn-primary location-accept">Aceptar</label>
+            </section>
+          </div>
           <div className="bg-amber-50 px-4 py-2 text-center text-sm font-semibold text-amber-800">
             Modo demostración: no use datos reales, no hay pagos reales, productos ficticios y DemoPay simulado.
           </div>
