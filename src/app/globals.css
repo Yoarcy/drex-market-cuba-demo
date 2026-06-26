@@ -998,3 +998,28 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 
 /* Forgot password link */
 .forgot-password-link { border: 0; background: transparent; color: #0F766E; font-weight: 900; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Register/profile photo box layout */
+.profile-register-layout { display: grid; grid-template-columns: minmax(0, 1fr) 132px; gap: 14px; align-items: start; }
+.profile-register-left { display: grid; gap: 12px; }
+.profile-photo-box {
+  position: relative;
+  min-height: 132px;
+  border-radius: 22px;
+  border: 2px dashed #99F6E4;
+  background: #F8FAFC;
+  color: #64748B !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 900 !important;
+}
+.profile-photo-box:hover { background: #F0FDFA; border-color: #14B8A6; }
+.profile-photo-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+.profile-photo-box span { position: relative; z-index: 1; padding: 10px; }
+.profile-photo-box input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; padding: 0; min-height: 0; }
+.profile-photo-box-wide { min-height: 150px; }
+@media (max-width: 640px) { .profile-register-layout { grid-template-columns: 1fr; } .profile-photo-box { min-height: 170px; } }

@@ -95,13 +95,18 @@ export function ProfileMenu() {
           {view === "register" && (
             <form className="profile-form" onSubmit={(event) => { event.preventDefault(); register(); }}>
               <h2>Crear cuenta</h2>
-              <div className="profile-two-cols">
-                <label>Nombre<input autoComplete="given-name" value={profile.firstName} onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} required /></label>
-                <label>Apellidos<input autoComplete="family-name" value={profile.lastName} onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} required /></label>
+              <div className="profile-register-layout">
+                <div className="profile-register-left">
+                  <label>Nombre<input autoComplete="given-name" value={profile.firstName} onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} required /></label>
+                  <label>Apellidos<input autoComplete="family-name" value={profile.lastName} onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} required /></label>
+                  <label>WhatsApp<input autoComplete="tel" value={profile.whatsapp} onChange={(e) => setProfile({ ...profile, whatsapp: e.target.value })} required /></label>
+                </div>
+                <label className="profile-photo-box">
+                  {profile.photo ? <img src={profile.photo} alt="Foto del usuario" /> : <span>imagen</span>}
+                  <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handlePhoto} />
+                </label>
               </div>
-              <label>Número de WhatsApp<input autoComplete="tel" value={profile.whatsapp} onChange={(e) => setProfile({ ...profile, whatsapp: e.target.value })} required /></label>
               <label>Correo<input type="email" autoComplete="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} required /></label>
-              <label>Foto<input type="file" accept="image/png,image/jpeg,image/webp" onChange={handlePhoto} /></label>
               <button type="submit" className="btn-primary profile-full-button">Registrarse</button>
               <button type="button" className="profile-secondary-button" onClick={() => { closePanel(); window.location.href = "/"; }}>Volver al inicio</button>
             </form>
@@ -119,7 +124,10 @@ export function ProfileMenu() {
               </div>
               <label>Número de WhatsApp<input autoComplete="tel" value={profile.whatsapp} onChange={(e) => setProfile({ ...profile, whatsapp: e.target.value })} /></label>
               <label>Correo<input type="email" autoComplete="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} /></label>
-              <label>Cambiar foto<input type="file" accept="image/png,image/jpeg,image/webp" onChange={handlePhoto} /></label>
+              <label className="profile-photo-box profile-photo-box-wide">
+                {profile.photo ? <img src={profile.photo} alt="Foto del usuario" /> : <span>Cambiar foto</span>}
+                <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handlePhoto} />
+              </label>
               <button type="button" className="btn-primary profile-full-button" onClick={closePanel}>Guardar cambios</button>
             </form>
           )}
