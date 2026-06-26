@@ -4,12 +4,18 @@ import { useState } from "react";
 
 const availableMunicipalities = new Set(["Bauta"]);
 
+const municipalitiesByProvince: Record<string, string[]> = {
+  Artemisa: ["Bauta", "Artemisa", "Guanajay", "Caimito", "Bahía Honda", "San Cristóbal"],
+  "La Habana": ["Playa", "Plaza de la Revolución", "Centro Habana", "Habana Vieja", "Diez de Octubre", "Boyeros"],
+  Mayabeque: ["San José de las Lajas", "Güines", "Santa Cruz del Norte", "Madruga", "Jaruco", "Bejucal"],
+};
+
 export function LocationModal() {
   const [open, setOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [province, setProvince] = useState("");
   const [municipality, setMunicipality] = useState("");
-  const [selectedLabel, setSelectedLabel] = useState("Ubicación");
+  const [selectedLabel, setSelectedLabel] = useState("Destino");
   const [invalidProvince, setInvalidProvince] = useState(false);
   const [invalidMunicipality, setInvalidMunicipality] = useState(false);
 
@@ -36,7 +42,7 @@ export function LocationModal() {
       setAlertOpen(true);
       return;
     }
-    setSelectedLabel(`${municipality}, ${province}`);
+    setSelectedLabel("Destino");
     setOpen(false);
   }
 
@@ -62,7 +68,14 @@ export function LocationModal() {
           <div className="location-form">
             <label>
               Provincia
-              <select className={invalidProvince ? "invalid" : ""} value={province} onChange={(event) => setProvince(event.target.value)}>
+              <select
+                className={invalidProvince ? "invalid" : ""}
+                value={province}
+                onChange={(event) => {
+                  setProvince(event.target.value);
+                  setMunicipality("");
+                }}
+              >
                 <option value="">Selecciona provincia</option>
                 <option value="Artemisa">Artemisa</option>
                 <option value="La Habana">La Habana</option>
@@ -73,12 +86,9 @@ export function LocationModal() {
               Municipio
               <select className={invalidMunicipality ? "invalid" : ""} value={municipality} onChange={(event) => setMunicipality(event.target.value)}>
                 <option value="">Selecciona municipio</option>
-                <option value="Bauta">Bauta</option>
-                <option value="Artemisa">Artemisa</option>
-                <option value="Guanajay">Guanajay</option>
-                <option value="Caimito">Caimito</option>
-                <option value="Bahía Honda">Bahía Honda</option>
-                <option value="San Cristóbal">San Cristóbal</option>
+                {(municipalitiesByProvince[province] ?? []).map((item) => (
+                  <option key={item} value={item}>{item}</option>
+                ))}
               </select>
             </label>
           </div>

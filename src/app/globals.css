@@ -682,3 +682,14 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 .location-alert-card p { margin: 0 0 18px; color: #64748B; }
 .location-form select.invalid { border-color: #F97316 !important; box-shadow: 0 0 0 4px rgba(249,115,22,.16) !important; animation: fieldShake .28s ease; }
 @keyframes fieldShake { 0%,100% { transform: translateX(0); } 35% { transform: translateX(-3px); } 70% { transform: translateX(3px); } }
+
+/* Tooltip refinement: black text, no bubble background */
+.header-icon-link[data-tooltip]::before {
+  background: transparent !important;
+  color: #0B1220 !important;
+  box-shadow: none !important;
+  padding: 4px 0 !important;
+  font-weight: 900 !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.65);
+}
+.header-icon-link[data-tooltip]::after { display: none !important; }
