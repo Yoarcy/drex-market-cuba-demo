@@ -53,7 +53,7 @@ export function CartDemo() {
   return (
     <div className="cart-page-shell">
       <section className="cart-hero-card">
-        <span className="badge-demo">Carrito de compra</span>
+        <div className="cart-title-animation" aria-hidden="true"><img src="/hero-truck/carr_transparent.png" alt="" /></div>
         <h1>Lista de la compra</h1>
         <p>Revisa productos, cantidades y peso estimado antes de confirmar el pedido. El peso define cuántas mensajerías se cobran.</p>
       </section>
@@ -68,9 +68,7 @@ export function CartDemo() {
               <article className="cart-item-card" key={item.id}>
                 <div className="cart-item-image">{item.image}</div>
                 <div className="cart-item-info">
-                  <p className="cart-item-id">{item.id}</p>
                   <h2>{item.name}</h2>
-                  <p>{item.provider}</p>
                   <div className="cart-weight-line">Peso unidad: <b>{item.unitWeightKg} kg</b> <span>({item.unitLabel})</span></div>
                   <div className="cart-weight-line">Peso total producto: <b>{itemWeight} kg</b></div>
                 </div>
