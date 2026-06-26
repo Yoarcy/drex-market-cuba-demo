@@ -1,4 +1,3 @@
-import { MunicipalitySelector } from "@/components/MunicipalitySelector";
 
 export default function Home() {
   return (
@@ -30,10 +29,6 @@ export default function Home() {
           </div>
         </div>
       </div></section>
-
-      <section id="ubicacion" className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
-        <MunicipalitySelector />
-      </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
         <div className="grid gap-4 md:grid-cols-4">
