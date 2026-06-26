@@ -1,31 +1,44 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type ViewMode = "menu" | "login" | "register" | "recover" | "profile";
+type CustomerProfile = { firstName: string; lastName: string; whatsapp: string; email: string; photo: string };
 
 const avatarOptions = Array.from({ length: 10 }, (_, index) => `/assets/avatares/avatar-${String(index + 1).padStart(2, "0")}.png`);
+const emptyProfile: CustomerProfile = { firstName: "", lastName: "", whatsapp: "", email: "", photo: "" };
+
+function loadStoredProfile() {
+  if (typeof window === "undefined") return emptyProfile;
+  const raw = localStorage.getItem("drex-market-profile");
+  if (!raw) return emptyProfile;
+  try { return { ...emptyProfile, ...JSON.parse(raw) } as CustomerProfile; } catch { return emptyProfile; }
+}
+
+function loadLoggedIn() {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem("drex-market-profile-logged") === "true";
+}
 
 export function ProfileMenu() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<ViewMode>("menu");
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(loadLoggedIn);
   const [showPassword, setShowPassword] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [loginError, setLoginError] = useState("");
   const [photoPickerOpen, setPhotoPickerOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [profile, setProfile] = useState({
-    firstName: "",
-    lastName: "",
-    whatsapp: "",
-    email: "",
-    photo: "",
-  });
+  const [profile, setProfile] = useState<CustomerProfile>(loadStoredProfile);
 
   const displayName = `${profile.firstName} ${profile.lastName}`.trim() || "Cliente DREX";
+
+  useEffect(() => {
+    localStorage.setItem("drex-market-profile", JSON.stringify(profile));
+    localStorage.setItem("drex-market-profile-logged", String(loggedIn));
+  }, [profile, loggedIn]);
 
   function openPanel(nextView: ViewMode = loggedIn ? "profile" : "menu") {
     setView(nextView);
@@ -59,8 +72,12 @@ export function ProfileMenu() {
   function handlePhoto(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) return;
-    setProfile((current) => ({ ...current, photo: URL.createObjectURL(file) }));
-    setPhotoPickerOpen(false);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setProfile((current) => ({ ...current, photo: String(reader.result || "") }));
+      setPhotoPickerOpen(false);
+    };
+    reader.readAsDataURL(file);
     event.target.value = "";
   }
 
@@ -70,7 +87,7 @@ export function ProfileMenu() {
   }
 
   function openFileSelector() {
-    setTimeout(() => fileInputRef.current?.click(), 0);
+    fileInputRef.current?.click();
   }
 
   return (

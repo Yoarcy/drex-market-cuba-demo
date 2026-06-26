@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { formatMoney } from "@/lib/demo-data";
 
@@ -33,8 +35,30 @@ function deliveryBlocks(totalWeight: number) {
   return blocks;
 }
 
+function createDemoOrderId() {
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(-2);
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+  const dateKey = `${yy}${mm}${dd}`;
+  const storageKey = `drex-order-seq-${dateKey}`;
+  const nextNumber = Number(localStorage.getItem(storageKey) || "0") + 1;
+  localStorage.setItem(storageKey, String(nextNumber));
+  return `DO${dateKey}${String(nextNumber).padStart(5, "0")}`;
+}
+
 export function CartDemo() {
+  const router = useRouter();
+  const [buyerName] = useState(() => {
+    if (typeof window === "undefined") return "Cliente DREX";
+    try {
+      const profile = JSON.parse(localStorage.getItem("drex-market-profile") || "{}");
+      return `${profile.firstName || ""} ${profile.lastName || ""}`.trim() || "Cliente DREX";
+    } catch { return "Cliente DREX"; }
+  });
   const [items, setItems] = useState(initialItems);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"wallet" | "card">("wallet");
   const totals = useMemo(() => {
     const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const totalWeight = roundKg(items.reduce((sum, item) => sum + item.unitWeightKg * item.quantity, 0));
@@ -99,9 +123,75 @@ export function CartDemo() {
               <div className="delivery-block" key={block.label}><span>{block.label}</span><b>{block.weight} kg</b></div>
             ))}
           </div>
-          <button type="button" className="btn-primary cart-checkout">Continuar pedido</button>
+          <div className="cart-summary-actions">
+            <Link href="/" className="cart-keep-shopping">Seguir comprando</Link>
+            <button type="button" className="btn-primary cart-checkout" onClick={() => setCheckoutOpen(true)} disabled={items.length === 0}>Hacer compra</button>
+          </div>
         </aside>
       </section>
+
+          {checkoutOpen && (
+        <section className="checkout-demo-panel" aria-label="Proceso de compra simulado">
+          <div className="checkout-demo-head">
+            <div>
+              <span className="badge">Compra demo</span>
+              <h2>Datos para completar el pedido</h2>
+              <p>Simulación completa: comprador, beneficiario, entrega y método de pago. No uses datos bancarios reales.</p>
+            </div>
+            <button type="button" className="checkout-close" onClick={() => setCheckoutOpen(false)} aria-label="Cerrar compra">×</button>
+          </div>
+
+            <form className="checkout-demo-form" onSubmit={(event) => {
+              event.preventDefault();
+              const form = new FormData(event.currentTarget);
+              const orderId = createDemoOrderId();
+              const order = {
+                id: orderId,
+                customer: buyerName,
+                beneficiary: String(form.get("beneficiary") || "Beneficiario DREX"),
+                phone: String(form.get("beneficiaryPhone") || ""),
+                province: String(form.get("province") || "Artemisa"),
+                municipality: String(form.get("municipality") || "Bauta"),
+                address: String(form.get("address") || ""),
+                payment: paymentMethod === "wallet" ? "Billetera virtual" : "Tarjeta bancaria",
+                total: totals.subtotal,
+                status: "Pagado · En preparación",
+              };
+              localStorage.setItem("drex-market-last-order", JSON.stringify(order));
+              localStorage.setItem("drex-market-cart-paid", "true");
+              setItems([]);
+              router.push("/mis-pedidos");
+            }}>
+              <div className="registered-buyer-card">
+                <span>Comprador registrado</span>
+                <b>{buyerName}</b>
+                <small>Estos datos salen del perfil iniciado. Aquí solo se completa el beneficiario.</small>
+              </div>
+              <div className="checkout-grid">
+                <label>Beneficiario en Cuba<input name="beneficiary" placeholder="Nombre de quien recibe" required /></label>
+                <label>Teléfono del beneficiario<input name="beneficiaryPhone" placeholder="+53 5XXX XXXX" required /></label>
+                <label>Provincia<input name="province" defaultValue="Artemisa" required /></label>
+                <label>Municipio<input name="municipality" defaultValue="Bauta" required /></label>
+              </div>
+              <label>Dirección de entrega<textarea name="address" placeholder="Calle, número, reparto, referencia cercana" required /></label>
+
+              <div className="payment-method-box">
+                <h3>Método de pago</h3>
+                <div className="payment-buttons-row">
+                  <button type="button" className={`payment-option ${paymentMethod === "wallet" ? "active" : ""}`} onClick={() => setPaymentMethod("wallet")}>Billetera virtual</button>
+                  <button type="button" className={`payment-option ${paymentMethod === "card" ? "active" : ""}`} onClick={() => setPaymentMethod("card")}>Tarjeta bancaria</button>
+                </div>
+                {paymentMethod === "wallet" ? (
+                  <p>Se descontará de tu saldo DemoPay/DREX Wallet. Si no tienes saldo suficiente, queda como pago pendiente demo.</p>
+                ) : (
+                  <p>Pago simulado con tarjeta bancaria. No se piden números reales; solo se muestra el flujo comercial.</p>
+                )}
+              </div>
+
+              <button type="submit" className="btn-primary checkout-finish-button">Confirmar compra demo</button>
+            </form>
+        </section>
+      )}
     </div>
   );
 }

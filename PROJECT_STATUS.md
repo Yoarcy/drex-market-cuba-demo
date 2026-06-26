@@ -2,63 +2,98 @@
 
 ## Estado actual
 
-Fase iniciada: **Fase 0 / Fase 1 visual base**
+Fase actual: **integración demo con SQLite/Prisma + pulido visual público/admin**.
+
+Rama de trabajo activa: `feature/sqlite-cart-orders-admin`.
 
 ## Completado
 
-- Carpeta creada en `/root/.openclaw/workspace/projects/drex-factory/drex-market-cuba-demo`.
-- Proyecto Next.js inicializado.
+- Proyecto Next.js funcional en `/root/.openclaw/workspace/projects/drex-factory/drex-market-cuba-demo`.
 - Documentación base creada.
-- Prisma schema inicial creado para SQLite demo.
+- Prisma configurado para SQLite demo.
+- Migración inicial creada en `prisma/migrations/`.
+- Base local `prisma/dev.db` usada solo para desarrollo; no se versiona.
 - UI pública inicial creada:
   - Inicio
   - Selector provincia/municipio
   - Catálogo
+  - Catálogo por municipio/categoría
   - Vista producto
   - Carrito
   - Checkout
   - DemoPay
   - Confirmación de orden
   - Mis pedidos
-  - Login
-  - Registro
+  - Login/registro demo
   - Saldo DREX
-- UI admin inicial creada y separada de la tienda pública:
+- Header público con menú hamburguesa React nuevo:
+  - abre/cierra con botón
+  - cierra con click fuera
+  - cierra con `Esc`
+  - cierra al tocar enlace
+  - animación de aparición/escala
+  - blur fuerte en panel
+- Popup de perfil/login convencional:
+  - login usuario/correo + contraseña
+  - recuperar contraseña
+  - crear cuenta
+  - foto/avatar editable
+- Carrito interactivo con cantidades, eliminación, peso total y aviso de bloques de 20 kg para mensajería.
+- UI admin inicial separada de tienda pública:
   - login admin `/admin/login`
-  - Dashboard
+  - dashboard
   - pedidos recientes
   - analítica comercial
   - municipios
   - billeteras
-  - formulario visual para agregar proveedores
-  - formulario visual para agregar productos con imagen y precios
-  - productos/proveedores
+  - proveedores
+  - productos con imagen/precio/stock
+- APIs admin iniciales conectadas a Prisma:
+  - `GET /api/admin/orders`
+  - `GET/POST /api/admin/products`
+  - `GET/POST /api/admin/providers`
+  - `DELETE /api/admin/providers/[id]`
 - Módulo de inteligencia demo agregado:
   - recomendaciones basadas en co-compra, tendencia semanal y saldo disponible
   - previsión de demanda
   - riesgo de agotamiento por producto
   - fórmula visible y comprobable en UI
-- Verificación TypeScript de la app completada con `node node_modules/typescript/bin/tsc --noEmit` sin errores.
+
+## Verificación técnica reciente
+
+- `node node_modules/typescript/bin/tsc --noEmit` pasa sin errores.
+- `npm run lint` pasa sin errores; quedan warnings normales por uso de `<img>`.
+- `npm run build` compila correctamente con Next 15.5.19.
+- Servidor real probado en puerto `3001`.
+- Rutas verificadas con respuesta `200`:
+  - `/`
+  - `/catalogo`
+  - `/carrito`
+  - `/admin`
+  - `/mis-pedidos`
+  - `/api/admin/products`
+  - `/api/admin/providers`
+  - `/api/admin/orders`
 
 ## Decisiones
 
-- Nombre de billetera corregido a **Saldo DREX** para evitar confusión con crédito.
+- Nombre de billetera: **Saldo DREX**.
 - Saldo DREX será tipo débito demo: solo saldo previamente cargado, sin balance negativo.
 - DemoPay será pasarela ficticia sin datos de tarjeta.
 - Artemisa se carga completa; solo Bauta disponible en MVP.
 - La UI tiene prioridad de portafolio: debe verse comercial, moderna y responsive.
-- Tienda pública y panel admin deben estar separados; el usuario no debe ver ni navegar funciones administrativas.
+- Tienda pública y panel admin deben estar separados; el usuario común no debe ver ni navegar funciones administrativas.
+- No versionar logs, archivos `.pid`, previews locales ni `prisma/dev.db`.
 
-## Pendiente inmediato
+## Pendiente inmediato recomendado
 
-- Reparar instalación npm/Next para generar binarios y `package-lock.json` correctamente.
-- Validar build Next.js.
-- Ejecutar `prisma generate` y `prisma migrate dev` cuando dependencias estén sanas.
-- Conectar UI a base de datos real en vez de datos estáticos.
-- Ajustar/validar `prisma/seed.ts` después de generar Prisma Client.
+1. Validar visualmente el menú hamburguesa en pantalla/teléfono.
+2. Continuar conexión real de carrito/órdenes a SQLite.
+3. Pulir admin para que productos/proveedores/órdenes usen Prisma de forma consistente.
+4. Añadir seed demo controlado si hace falta para mostrar datos estables.
+5. Revisar warnings de `<img>` más adelante si se desea optimización con `next/image`.
 
-## Bloqueo actual
+## Bloqueos actuales
 
-- `npm install` descarga paquetes pero queda incompleto/colgado hasta ser terminado por el sistema; no genera `.bin` ni `package-lock.json` de forma confiable.
-- `next build` falla con `SIGBUS` en este entorno.
-- TypeScript de la app sí pasa limpio; el bloqueo está en instalación/build, no en las pantallas creadas.
+- No hay bloqueo técnico crítico detectado.
+- El proyecto compila, TypeScript pasa y lint no tiene errores.
