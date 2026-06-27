@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
-import { LocationModal } from "@/components/LocationModal";
-import { ProfileMenu } from "@/components/ProfileMenu";
+import { HeaderActions } from "@/components/HeaderActions";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -27,12 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <img src="/assets/brand/drex-market-mark.svg" alt="Logo DREX" className="brand-header-mark" />
                 <span className="brand-text-lockup"><span className="brand-line"><b>DREX</b><strong>Market</strong></span><span className="brand-subline">Cuba Demo</span></span>
               </Link>
-              <nav className="header-actions" aria-label="Accesos rápidos">
-                <Link href="/carrito" className="header-icon-link" aria-label="Carrito" data-tooltip="Carrito"><img src="/assets/icons/03_cart.png" alt="Carrito" /></Link>
-                <Link href="/saldo-drex" className="header-icon-link" aria-label="Billetera virtual" data-tooltip="Billetera"><img src="/assets/icons/04_wallet.png" alt="Billetera" /></Link>
-                <LocationModal />
-                <ProfileMenu />
-              </nav>
+              <HeaderActions />
             </div>
           </header>
 

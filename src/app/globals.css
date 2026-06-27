@@ -129,6 +129,31 @@ label, label span {
 }
 
 /* Admin refinement without changing business logic */
+.admin-dashboard-hero {
+  position: relative;
+  min-height: 115px;
+  overflow: hidden;
+  border-radius: 30px;
+  background:
+    linear-gradient(90deg, rgba(7, 24, 39, 0.08), rgba(15, 118, 110, 0.04)),
+    url("/assets/admin/admin-dashboard-bg.png") center/cover no-repeat;
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 0.22);
+}
+.admin-dashboard-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 15%, rgba(20, 184, 166, 0.03), transparent 34%);
+}
+.admin-dashboard-hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 115px;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 22px 28px;
+}
 main > section.grid > aside.demo-card {
   position: sticky;
   top: 92px;
@@ -146,6 +171,129 @@ main > section.grid > aside.demo-card button {
 main > section.grid > aside.demo-card button.bg-emerald-600 {
   background: linear-gradient(135deg, #0F766E, #14B8A6) !important;
   box-shadow: 0 10px 22px rgba(15, 118, 110, 0.22);
+}
+.admin-section-palette {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 56px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+.admin-section-palette-fit {
+  grid-template-columns: minmax(0, 1fr);
+}
+.admin-section-palette-fit .admin-section-arrow {
+  display: none;
+}
+.admin-section-scroll {
+  display: flex;
+  min-width: 0;
+  gap: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.admin-section-scroll::-webkit-scrollbar { display: none; }
+.admin-section-button {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 72px;
+  width: 72px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #FFFFFF, #F1F5F9);
+  color: #334155;
+  padding: 9px;
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.24), 0 10px 22px rgba(15, 23, 42, 0.06);
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+  white-space: nowrap;
+}
+.admin-section-button img {
+  height: 100%;
+  width: 100%;
+  border-radius: 18px;
+  object-fit: contain;
+  opacity: 0.78;
+  background: rgba(255, 255, 255, 0.42);
+  padding: 2px;
+  filter: drop-shadow(0 6px 10px rgba(15, 23, 42, 0.10));
+  transition: opacity 180ms ease, transform 180ms ease, filter 180ms ease, border-radius 180ms ease;
+}
+.admin-section-button::after {
+  content: attr(data-label);
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 9px);
+  z-index: 20;
+  min-width: max-content;
+  transform: translateX(-50%) translateY(-4px);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.94);
+  color: #FFFFFF;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 900;
+  opacity: 0;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+.admin-section-button:hover {
+  background: linear-gradient(180deg, #ECFDF5, #CCFBF1);
+  color: #0F766E;
+  transform: translateY(-2px);
+  box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.16), 0 14px 28px rgba(15, 118, 110, 0.16);
+}
+.admin-section-button:hover img {
+  opacity: 0.94;
+  animation: iconPremiumShake .55s ease both;
+  filter: drop-shadow(0 10px 16px rgba(15, 118, 110, 0.22)) saturate(1.08);
+}
+.admin-section-button:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.admin-section-button-active {
+  background: linear-gradient(135deg, #0F766E, #14B8A6);
+  color: #FFFFFF;
+  box-shadow: 0 12px 24px rgba(15, 118, 110, 0.24);
+}
+.admin-section-button-active img { opacity: 0.92; filter: drop-shadow(0 10px 16px rgba(255, 255, 255, 0.16)) saturate(1.12); }
+.admin-section-button-active:hover { color: #FFFFFF; }
+.admin-section-arrow {
+  display: inline-flex;
+  height: 56px;
+  width: 56px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: #F0FDFA;
+  color: #0F766E;
+  font-size: 34px;
+  font-weight: 950;
+  line-height: 1;
+  padding: 0;
+  text-align: center;
+  box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.12);
+  transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+.admin-section-arrow span {
+  display: flex;
+  height: 1em;
+  width: 1em;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+.admin-section-arrow:hover {
+  background: #CCFBF1;
+  transform: translateY(-1px);
+  box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.2), 0 10px 20px rgba(15, 118, 110, 0.12);
 }
 
 .rounded-full { border-radius: 999px; }
@@ -238,7 +386,6 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 }
 .hamburger-trigger:active { transform: translateY(0); }
 .hamburger-lines,
-.hamburger-lines::before,
 .hamburger-lines::after {
   display: block;
   height: 3px;
@@ -248,83 +395,80 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 .hamburger-lines {
   position: relative;
   width: 23px;
-  box-shadow: 0 7px 0 rgba(15, 159, 149, 0.86);
+  transform: translateY(-4px);
 }
-.hamburger-lines::before,
+.hamburger-lines::before { content: none; }
 .hamburger-lines::after {
   content: "";
   position: absolute;
   left: 0;
+  top: 8px;
+  width: 15px;
 }
-.hamburger-lines::before { top: -7px; width: 23px; }
-.hamburger-lines::after { top: 7px; width: 15px; }
 .hamburger-overlay {
   pointer-events: none;
   position: fixed;
-  inset: 72px 0 0;
+  inset: 72px 0 0 0;
   z-index: 68;
   opacity: 0;
-  background: rgba(15, 23, 42, 0);
-  transition: opacity 240ms ease, background 240ms ease;
+  background: transparent;
+  transition: opacity 240ms ease;
 }
 .hamburger-panel {
-  position: absolute;
+  position: fixed;
   left: 0;
-  top: 0;
-  width: min(360px, 88vw);
+  top: 72px;
+  width: min(270px, 78vw);
   max-height: calc(100vh - 72px);
   overflow-y: auto;
   overscroll-behavior: contain;
+
   transform: translateX(-18px) scale(0.86);
   transform-origin: top left;
   opacity: 0;
   visibility: hidden;
-  border-right: 1px solid rgba(226, 232, 240, 0.82);
-  background: rgba(255, 255, 255, 0.68);
-  backdrop-filter: blur(46px) saturate(1.45) contrast(0.82);
-  -webkit-backdrop-filter: blur(46px) saturate(1.45) contrast(0.82);
+
+  border: 1px solid rgba(226, 232, 240, 0.72);
+  border-left: 0;
+  border-radius: 0 24px 24px 24px;
+
+  background: rgba(255, 255, 255, 0.93);
+  backdrop-filter: blur(40px) saturate(1.05);
+  -webkit-backdrop-filter: blur(40px) saturate(1.05);
+
   box-shadow: 30px 0 90px rgba(15, 23, 42, 0.22);
-  padding: 22px 22px 34px;
+  padding: 11px 22px 17px;
+
   transition:
     opacity 230ms ease,
     transform 230ms cubic-bezier(.24,.95,.22,1),
     visibility 0s linear 230ms;
 }
-.hamburger-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.72), rgba(240,253,250,.58)),
-    radial-gradient(circle at 20% 0%, rgba(20,184,166,.22), transparent 34%);
-}
 .hamburger-menu-shell[data-open="true"] .hamburger-overlay {
   pointer-events: auto;
   opacity: 1;
-  background: rgba(15, 23, 42, 0.22);
 }
 .hamburger-menu-shell[data-open="true"] .hamburger-panel {
   opacity: 1;
   visibility: visible;
   transform: translateX(0) scale(1);
   transition:
-    opacity 260ms ease,
-    transform 260ms cubic-bezier(.18,1.14,.24,1),
+    opacity 230ms ease,
+    transform 230ms cubic-bezier(.24,.95,.22,1),
     visibility 0s linear 0s;
 }
 .hamburger-panel::-webkit-scrollbar { width: 8px; }
 .hamburger-panel::-webkit-scrollbar-track { background: transparent; }
 .hamburger-panel::-webkit-scrollbar-thumb { background: rgba(15, 118, 110, 0.24); border-radius: 999px; }
 .hamburger-panel::-webkit-scrollbar-thumb:hover { background: rgba(15, 118, 110, 0.40); }
-.hamburger-title { display: flex; align-items: center; gap: 12px; padding-bottom: 18px; border-bottom: 1px solid rgba(148, 163, 184, 0.35); }
+.hamburger-title { display: flex; align-items: center; gap: 12px; padding-bottom: 9px; border-bottom: 1px solid rgba(148, 163, 184, 0.35); }
 .hamburger-logo { width: 38px; height: 38px; object-fit: contain; }
 .hamburger-title strong { color: var(--color-text); font-size: 18px; }
 .hamburger-title p { margin: 3px 0 0; font-size: 13px; font-weight: 700; color: var(--color-primary); }
-.hamburger-nav { display: grid; gap: 8px; margin-top: 18px; }
+.hamburger-nav { display: grid; gap: 4px; margin-top: 9px; }
 .hamburger-nav a {
   display: flex;
-  min-height: 48px;
+  min-height: 36px;
   align-items: center;
   gap: 12px;
   border-radius: 14px;
@@ -334,7 +478,20 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
   transition: background 180ms ease, color 180ms ease, transform 180ms ease;
 }
 .hamburger-nav a span { color: #0F766E; font-size: 12px; font-weight: 900; }
+.hamburger-nav a img {
+  height: 25px;
+  width: 25px;
+  object-fit: contain;
+  opacity: 0.78;
+  filter: drop-shadow(0 6px 10px rgba(15, 23, 42, 0.10));
+  transition: opacity 180ms ease, transform 180ms ease, filter 180ms ease;
+}
 .hamburger-nav a:hover { background: rgba(240, 253, 250, 0.82); color: #0B1220; transform: translateX(2px); }
+.hamburger-nav a:hover img {
+  opacity: 0.94;
+  animation: iconPremiumShake .55s ease both;
+  filter: drop-shadow(0 10px 16px rgba(15, 118, 110, 0.22)) saturate(1.08);
+}
 @media (max-width: 640px) {
   .brand-mark { height: 38px; width: 38px; font-size: 18px; }
   .brand-sub::before, .brand-sub::after { width: 28px; margin-inline: 7px; }
