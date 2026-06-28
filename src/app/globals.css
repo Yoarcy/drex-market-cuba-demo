@@ -190,7 +190,8 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
   min-width: 0;
   gap: 10px;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
+  padding: 4px 2px 8px;
   scroll-behavior: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -259,8 +260,8 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
 .admin-section-button:hover {
   background: radial-gradient(circle at 30% 15%, #FFFFFF, #CCFBF1 48%, #99F6E4 100%);
   color: #0F766E;
-  transform: translateY(-4px) scale(1.035);
-  box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.20), 0 18px 34px rgba(15, 118, 110, 0.22), 0 0 0 6px rgba(20,184,166,.08);
+  transform: translateY(-2px);
+  box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.22), 0 14px 26px rgba(15, 118, 110, 0.18);
 }
 .admin-section-button:hover::before {
   opacity: 1;
@@ -276,12 +277,12 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
   transform: translateX(-50%) translateY(0);
 }
 .admin-section-button:active {
-  transform: translateY(-1px) scale(0.99);
+  transform: translateY(0) scale(0.99);
 }
 .admin-section-button-active {
   background: radial-gradient(circle at 30% 15%, #5EEAD4 0%, #14B8A6 44%, #0F766E 100%);
   color: #FFFFFF;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28), 0 18px 34px rgba(15, 118, 110, 0.30), 0 0 0 5px rgba(20,184,166,.10);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28), 0 14px 28px rgba(15, 118, 110, 0.26);
 }
 .admin-section-button-active img {
   opacity: 0.96;
