@@ -19,6 +19,7 @@ const adminNav = [
   { label: "Dashboard", href: "/admin#Dashboard", icon: "dashboard.png" },
   { label: "Proveedores", href: "/admin#Proveedores", icon: "proveedores.png" },
   { label: "Productos", href: "/admin#Productos", icon: "productos.png" },
+  { label: "Merma", href: "/admin#Merma", icon: "merma.png" },
   { label: "Promociones", href: "/admin#Promociones", icon: "promo.png" },
   { label: "Pedidos", href: "/admin#Pedidos", icon: "pedidos.png" },
   { label: "Seguimiento", href: "/admin#Seguimiento", icon: "seguimiento.png" },
