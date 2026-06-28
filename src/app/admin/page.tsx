@@ -245,6 +245,9 @@ export default function AdminPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         providerId: activeProvider.id,
+        providerName: activeProvider.name,
+        providerPhone: activeProvider.phone,
+        municipality: activeProvider.municipality,
         slug: productForm.slug,
         name: productForm.name,
         brand: productForm.brand || "Marca demo",
@@ -257,6 +260,10 @@ export default function AdminPage() {
         image: productImagePreview || "📦",
       }),
     });
+    if (!response.ok) {
+      alert("No se pudo guardar el producto en la base de datos. Revisa proveedor, nombre, precio y stock.");
+      return;
+    }
     const newProduct: Product = await response.json();
     setProductList([newProduct, ...productList]);
     setViewProductId(newProduct.id);
@@ -272,7 +279,12 @@ export default function AdminPage() {
     setStockToAdd("");
   };
 
-  const deleteProduct = (productId: string) => {
+  const deleteProduct = async (productId: string) => {
+    const response = await fetch(`/api/admin/products/${productId}`, { method: "DELETE" });
+    if (!response.ok) {
+      alert("No se pudo eliminar el producto de la base de datos.");
+      return;
+    }
     const deletedProductIds = loadStoredList<string>("drex-market-deleted-products", []);
     if (!deletedProductIds.includes(productId)) localStorage.setItem("drex-market-deleted-products", JSON.stringify([...deletedProductIds, productId]));
     setProductList(productList.filter((product) => product.id !== productId));

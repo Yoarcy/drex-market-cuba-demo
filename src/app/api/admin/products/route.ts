@@ -37,15 +37,40 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const provider = await prisma.provider.findUniqueOrThrow({ where: { id: body.providerId }, include: { municipality: true } });
+  const municipality = await prisma.municipality.findFirstOrThrow({ where: { name: body.municipality || "Bauta" } });
+  let provider = body.providerId
+    ? await prisma.provider.findUnique({ where: { id: body.providerId }, include: { municipality: true } })
+    : null;
+  if (!provider && body.providerName) {
+    provider = await prisma.provider.findFirst({ where: { name: body.providerName, municipalityId: municipality.id }, include: { municipality: true } });
+  }
+  if (!provider) {
+    provider = await prisma.provider.create({
+      data: {
+        municipalityId: municipality.id,
+        name: body.providerName || "Proveedor demo",
+        contactName: "Creado automáticamente desde producto",
+        phone: body.providerPhone || "",
+        isActive: true,
+      },
+      include: { municipality: true },
+    });
+  }
   const salePrice = cents(body.price);
   const providerCost = cents(body.cost);
+  const baseSlug = slugify(body.slug || body.name || "producto");
+  let slug = baseSlug;
+  let suffix = 2;
+  while (await prisma.product.findUnique({ where: { slug } })) {
+    slug = `${baseSlug}-${suffix}`;
+    suffix += 1;
+  }
   const product = await prisma.product.create({
     data: {
       municipalityId: provider.municipalityId,
       providerId: provider.id,
       name: body.name,
-      slug: body.slug || slugify(body.name),
+      slug,
       description: body.description || "Producto agregado desde admin demo.",
       category: body.category || "Mercado",
       providerCost,
