@@ -31,7 +31,7 @@ function mapProduct(product: { id: string; slug: string; name: string; descripti
 }
 
 export async function GET() {
-  const products = await prisma.product.findMany({ include: { provider: true, municipality: true }, orderBy: { createdAt: "desc" } });
+  const products = await prisma.product.findMany({ where: { isActive: true }, include: { provider: true, municipality: true }, orderBy: { createdAt: "desc" } });
   return NextResponse.json(products.map(mapProduct));
 }
 
