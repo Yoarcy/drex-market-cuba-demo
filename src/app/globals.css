@@ -267,10 +267,9 @@ main > section.grid > aside.demo-card button.bg-emerald-600 {
   transform: rotate(145deg) scale(1.06);
 }
 .admin-section-button:hover img {
-  opacity: 1;
-  transform: translateZ(0) scale(1.105) rotate(-2deg);
+  opacity: 0.94;
   animation: iconPremiumShake .55s ease both;
-  filter: drop-shadow(0 13px 18px rgba(15, 118, 110, 0.28)) saturate(1.18) contrast(1.04);
+  filter: drop-shadow(0 8px 14px rgba(20,184,166,.28)) saturate(1.12);
 }
 .admin-section-button:hover::after {
   opacity: 1;
