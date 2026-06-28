@@ -47,6 +47,11 @@ function loadInitialOrders() {
   }
 }
 
+
+const removedProductSlugs = new Set(["combo-familiar-bauta", "kit-aseo-hogar"]);
+const removedProductNames = new Set(["combo familiar bauta", "kit aseo hogar", "kit aseo del hogar"]);
+const keepVisibleProduct = (product: { slug?: string; name?: string }) => !removedProductSlugs.has(product.slug ?? "") && !removedProductNames.has((product.name ?? "").toLowerCase());
+
 function Field({ label, placeholder, type = "text", value, readOnly, onChange }: { label: string; placeholder?: string; type?: string; value?: string; readOnly?: boolean; onChange?: (value: string) => void }) {
   return <label className="space-y-2"><span className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">{label}</span><input readOnly={readOnly} type={type} placeholder={placeholder} value={value} onChange={(e) => onChange?.(e.target.value)} /></label>;
 }
@@ -58,7 +63,7 @@ export default function AdminPage() {
   const [providersLoaded] = useState(true);
   const [productsLoaded] = useState(true);
   const [providerList, setProviderList] = useState<Provider[]>(() => loadStoredList<Provider>("drex-market-demo-providers", initialProviders));
-  const [productList, setProductList] = useState<Product[]>(() => loadStoredList<Product>("drex-market-demo-products", initialProducts));
+  const [productList, setProductList] = useState<Product[]>(() => loadStoredList<Product>("drex-market-demo-products", initialProducts).filter(keepVisibleProduct));
   const [providerSearch, setProviderSearch] = useState("");
   const [viewProvider, setViewProvider] = useState<Provider | null>(null);
   const [editingProviderId, setEditingProviderId] = useState<string | null>(null);
@@ -78,7 +83,6 @@ export default function AdminPage() {
   const [bulkOrderIds, setBulkOrderIds] = useState("");
   const [bulkOrderStatus, setBulkOrderStatus] = useState("Preparando");
   const [promotionList, setPromotionList] = useState([
-    { id: "PROMO-BAU-001", name: "Combo familiar + aseo", discount: "10", product: "Combo Familiar Bauta + Kit Aseo Hogar", start: "2026-06-25", end: "2026-07-02", limit: "25", status: "Activa" },
     { id: "PROMO-BAU-002", name: "Liquidación stock bajo", discount: "7", product: "Productos seleccionados", start: "2026-06-25", end: "2026-06-30", limit: "10", status: "Pausada" },
   ]);
   const [showPromoForm, setShowPromoForm] = useState(false);
@@ -105,14 +109,15 @@ export default function AdminPage() {
         .map((provider: Provider) => ({ ...provider, ...(localProviders.find((local) => local.id === provider.id) ?? {}) }));
       const localOnlyProviders = localProviders.filter((provider) => !deletedProviderIds.includes(provider.id) && !mergedProviders.some((dbProvider: Provider) => dbProvider.id === provider.id));
       const nextProviders = [...localOnlyProviders, ...mergedProviders];
-      const localProducts = loadStoredList<Product>("drex-market-demo-products", []);
-      const deletedProductIds = loadStoredList<string>("drex-market-deleted-products", []);
+      const localProducts = loadStoredList<Product>("drex-market-demo-products", []).filter(keepVisibleProduct);
+      const deletedProductIds = Array.from(new Set([...loadStoredList<string>("drex-market-deleted-products", []), "combo-familiar-bauta", "kit-aseo-hogar"]));
+      localStorage.setItem("drex-market-deleted-products", JSON.stringify(deletedProductIds));
       const mergedProducts = dbProducts
         .filter((product: Product) => !deletedProductIds.includes(product.id))
         .map((product: Product) => ({ ...product, ...(localProducts.find((local) => local.id === product.id) ?? {}) }));
       const localOnlyProducts = localProducts.filter((product) => !deletedProductIds.includes(product.id) && !mergedProducts.some((dbProduct: Product) => dbProduct.id === product.id));
       setProviderList(nextProviders);
-      setProductList([...localOnlyProducts, ...mergedProducts]);
+      setProductList([...localOnlyProducts, ...mergedProducts].filter(keepVisibleProduct));
       setOrderList(dbOrders);
       setSelectedProvider(nextProviders[0]?.id ?? initialProviders[0].id);
     }).catch(() => {
@@ -121,7 +126,7 @@ export default function AdminPage() {
     return () => { active = false; };
   }, []);
   useEffect(() => { if (providersLoaded) localStorage.setItem("drex-market-demo-providers", JSON.stringify(providerList)); }, [providerList, providersLoaded]);
-  useEffect(() => { if (productsLoaded) localStorage.setItem("drex-market-demo-products", JSON.stringify(productList)); }, [productList, productsLoaded]);
+  useEffect(() => { if (productsLoaded) localStorage.setItem("drex-market-demo-products", JSON.stringify(productList.filter(keepVisibleProduct))); }, [productList, productsLoaded]);
   useEffect(() => {
     const updateMenuScroll = () => {
       const menuNode = adminMenuRef.current;
@@ -155,13 +160,15 @@ export default function AdminPage() {
   }, [providerList, providerSearch]);
   const filteredProducts = useMemo(() => {
     const q = productSearch.trim().toLowerCase();
-    if (!q) return productList;
-    return productList.filter((p) => [p.name, p.slug, p.id, p.brand].join(" ").toLowerCase().includes(q));
+    const visibleProducts = productList.filter(keepVisibleProduct);
+    if (!q) return visibleProducts;
+    return visibleProducts.filter((p) => [p.name, p.slug, p.id, p.brand].join(" ").toLowerCase().includes(q));
   }, [productList, productSearch]);
   const filteredPromoProducts = useMemo(() => {
     const q = promoProductSearch.trim().toLowerCase();
-    if (!q) return productList;
-    return productList.filter((p) => [p.name, p.slug, p.id, p.brand, p.provider].join(" ").toLowerCase().includes(q));
+    const visibleProducts = productList.filter(keepVisibleProduct);
+    if (!q) return visibleProducts;
+    return visibleProducts.filter((p) => [p.name, p.slug, p.id, p.brand, p.provider].join(" ").toLowerCase().includes(q));
   }, [productList, promoProductSearch]);
 
 
