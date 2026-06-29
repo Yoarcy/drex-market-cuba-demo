@@ -356,6 +356,19 @@ model WalletAdjustment {
   createdAt DateTime @default(now())
 }
 
+model AdminWalletEntry {
+  id             String   @id @default(cuid())
+  kind           String
+  beneficiaryName String?
+  senderName     String?
+  assignedToName String?
+  assignedToRole String?
+  amount         Int
+  note           String?
+  createdBy      String?
+  createdAt      DateTime @default(now())
+}
+
 model Reward {
   id        String @id @default(cuid())
   walletId  String
