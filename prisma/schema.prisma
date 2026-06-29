@@ -198,6 +198,7 @@ model Product {
   provider     Provider @relation(fields: [providerId], references: [id])
   orderItems   OrderItem[]
   inventoryMovements InventoryMovement[]
+  wasteRecords WasteRecord[]
 }
 
 model Service {
@@ -402,6 +403,22 @@ model InventoryMovement {
   type      String
   reason    String
   createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model WasteRecord {
+  id           String   @id @default(cuid())
+  productId    String
+  productName  String
+  productImage String?
+  quantity     Int
+  cause        String
+  payer        String
+  responsible  String
+  chargeAmount Int
+  deletedAt    DateTime?
+  createdAt    DateTime @default(now())
 
   product Product @relation(fields: [productId], references: [id])
 }

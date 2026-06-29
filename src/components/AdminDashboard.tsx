@@ -95,7 +95,7 @@ export function AdminDashboard() {
   const [previewWasteProductId, setPreviewWasteProductId] = useState("");
   const wasteCauses = ["Llegó roto desde proveedor", "Se rompió en reparto", "Producto vencido", "Derrame o envase abierto", "Mala manipulación", "Faltante en entrega", "Otra causa"];
   const [wasteForm, setWasteForm] = useState({ quantity: "", cause: "Llegó roto desde proveedor", customCause: "", payer: "Mensajero responsable", responsible: "" });
-  const [wasteRecords, setWasteRecords] = useState<WasteRecord[]>(() => loadStoredList<WasteRecord>("drex-market-waste-records", []));
+  const [wasteRecords, setWasteRecords] = useState<WasteRecord[]>([]);
   const [stockToAdd, setStockToAdd] = useState("");
   const [newPrice, setNewPrice] = useState("");
   const [orderList, setOrderList] = useState<AdminOrder[]>(loadInitialOrders);
@@ -122,21 +122,23 @@ export function AdminDashboard() {
       fetch("/api/admin/providers").then((response) => response.json()),
       fetch("/api/admin/products").then((response) => response.json()),
       fetch("/api/admin/orders").then((response) => response.json()),
-    ]).then(([dbProviders, dbProducts, dbOrders]) => {
+      fetch("/api/admin/waste").then((response) => response.json()),
+    ]).then(([dbProviders, dbProducts, dbOrders, dbWasteRecords]) => {
       if (!active) return;
       const nextProviders = dbProviders;
       setProviderList(nextProviders);
       setProductList(dbProducts.filter(keepVisibleProduct));
       setOrderList(dbOrders);
+      setWasteRecords(dbWasteRecords);
       setSelectedProvider(nextProviders[0]?.id ?? "");
     }).catch(() => {
       setProviderList([]);
       setProductList([]);
       setOrderList([]);
+      setWasteRecords([]);
     });
     return () => { active = false; };
   }, []);
-  useEffect(() => { localStorage.setItem("drex-market-waste-records", JSON.stringify(wasteRecords)); }, [wasteRecords]);
   useEffect(() => {
     const updateMenuScroll = () => {
       const menuNode = adminMenuRef.current;
@@ -359,38 +361,22 @@ export function AdminDashboard() {
     const finalCause = wasteForm.cause === "Otra causa" ? wasteForm.customCause.trim() : wasteForm.cause;
     if (!finalCause) { alert("Selecciona o escribe la causa de la merma."); return; }
     if (!wasteForm.responsible.trim() && wasteForm.payer !== "DREX asume") { alert("Pon el nombre del responsable o de quien lo rompió."); return; }
-    const nextStock = selectedWasteProduct.stock - quantity;
-    const response = await fetch(`/api/admin/products/${selectedWasteProduct.id}`, {
-      method: "PUT",
+    const response = await fetch("/api/admin/waste", {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        slug: selectedWasteProduct.slug,
-        name: selectedWasteProduct.name,
-        brand: selectedWasteProduct.brand,
-        weight: selectedWasteProduct.weight,
-        category: selectedWasteProduct.category,
-        description: selectedWasteProduct.description,
-        price: selectedWasteProduct.price,
-        cost: selectedWasteProduct.cost,
-        stock: nextStock,
-        image: selectedWasteProduct.image,
+        productId: selectedWasteProduct.id,
+        quantity,
+        cause: finalCause,
+        payer: wasteForm.payer,
+        responsible: wasteForm.responsible.trim() || "DREX",
+        chargeAmount: selectedWasteProduct.cost * quantity,
       }),
     });
     if (!response.ok) { alert("No se pudo descontar la merma del stock."); return; }
-    const savedProduct: Product = await response.json();
+    const { record, product: savedProduct }: { record: WasteRecord; product: Product } = await response.json();
     setProductList(productList.map((product) => product.id === savedProduct.id ? { ...product, ...savedProduct } : product));
-    setWasteRecords([{
-      id: `MERMA-${Date.now()}`,
-      productId: selectedWasteProduct.id,
-      productName: selectedWasteProduct.name,
-      productImage: selectedWasteProduct.image,
-      quantity,
-      cause: finalCause,
-      payer: wasteForm.payer,
-      responsible: wasteForm.responsible.trim() || "DREX",
-      chargeAmount: selectedWasteProduct.cost * quantity,
-      createdAt: new Date().toLocaleString("es-CU"),
-    }, ...wasteRecords]);
+    setWasteRecords([record, ...wasteRecords]);
     setWasteForm({ quantity: "", cause: "Llegó roto desde proveedor", customCause: "", payer: "Mensajero responsable", responsible: "" });
     setWasteSearch("");
     setSelectedWasteProductId("");
@@ -401,33 +387,12 @@ export function AdminDashboard() {
     const record = wasteRecords.find((item) => item.id === recordId);
     if (!record) return;
     if (!confirm("¿Seguro que quieres eliminar esta merma del historial? Se devolverá la cantidad al stock del producto.")) return;
-    const currentProduct = productList.find((product) => product.id === record.productId);
-    if (!currentProduct) {
-      alert("No se encontró el producto para devolver el stock.");
-      return;
-    }
-    const restoredStock = currentProduct.stock + record.quantity;
-    const response = await fetch(`/api/admin/products/${currentProduct.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        slug: currentProduct.slug,
-        name: currentProduct.name,
-        brand: currentProduct.brand,
-        weight: currentProduct.weight,
-        category: currentProduct.category,
-        description: currentProduct.description,
-        price: currentProduct.price,
-        cost: currentProduct.cost,
-        stock: restoredStock,
-        image: currentProduct.image,
-      }),
-    });
+    const response = await fetch(`/api/admin/waste/${recordId}`, { method: "DELETE" });
     if (!response.ok) {
       alert("No se pudo devolver el stock. Intenta otra vez.");
       return;
     }
-    const savedProduct: Product = await response.json();
+    const { product: savedProduct }: { product: Product } = await response.json();
     setProductList(productList.map((product) => product.id === savedProduct.id ? { ...product, ...savedProduct } : product));
     setWasteRecords(wasteRecords.filter((item) => item.id !== recordId));
   };
