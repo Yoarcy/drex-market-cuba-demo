@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { LoginForm } from "@/components/AuthForms";
 
 export default function LoginPage() {
   return (
@@ -21,28 +21,21 @@ export default function LoginPage() {
             <div className="profile-avatar">👤</div>
             <span className="profile-status">Demo sin verificar</span>
           </div>
-          <h2>Cliente Demo DREX</h2>
-          <p className="profile-email">cliente@demo.local</p>
+          <h2>Cliente DREX</h2>
+          <p className="profile-email">Inicia sesión o crea una cuenta</p>
           <div className="profile-data-grid">
-            <div><span>Nombre</span><b>Cliente Demo</b></div>
-            <div><span>Teléfono</span><b>+53 5000 0000</b></div>
-            <div><span>País</span><b>Exterior / Demo</b></div>
+            <div><span>Nombre</span><b>Según registro</b></div>
+            <div><span>Teléfono</span><b>Según registro</b></div>
+            <div><span>País</span><b>Configurable</b></div>
             <div><span>Rol</span><b>Comprador</b></div>
           </div>
-          <div className="profile-note">Estos datos son ficticios. Después conectamos edición real, foto de perfil, direcciones, beneficiarios y seguridad.</div>
+          <div className="profile-note">La cuenta ya se guarda en la base de datos. Después conectamos edición real, foto de perfil, direcciones y beneficiarios.</div>
         </aside>
 
         <section className="login-panel-card">
           <h2>Iniciar sesión</h2>
-          <p>Acceso demo para activar carrito, destino, pedidos y billetera.</p>
-          <form className="login-form-demo">
-            <label>Email<input placeholder="cliente@demo.local" type="email" /></label>
-            <label>Contraseña<input placeholder="••••••••" type="password" /></label>
-            <input className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" placeholder="No llenar: honeypot anti-bot" />
-            <div className="security-note">Protecciones planificadas: hash de contraseña, rate limit, bloqueo temporal, honeypot y verificación demo.</div>
-            <Link href="/catalogo" className="btn-primary login-main-button">Entrar como cliente demo</Link>
-            <Link href="/registro" className="register-link">Crear cuenta demo</Link>
-          </form>
+          <p>Acceso real con usuario guardado en base de datos.</p>
+          <LoginForm />
         </section>
       </section>
     </main>
