@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { IntelligencePanel } from "@/components/IntelligencePanel";
-import { analytics, demoOrders, formatMoney, products as initialProducts, providers as initialProviders, walletTransactions } from "@/lib/demo-data";
+import { analytics, demoOrders, formatMoney, walletTransactions } from "@/lib/demo-data";
 
-type Provider = (typeof initialProviders)[number] & { image?: string; imageFile?: string };
-type Product = (typeof initialProducts)[number] & { createdAt?: string; priceHistory?: { date: string; oldPrice: number; newPrice: number; variation: number }[] };
+type Provider = { id: string; name: string; municipality: string; province: string; category: string; contact?: string; phone: string; status: string; image?: string; imageFile?: string };
+type Product = { id: string; slug: string; name: string; brand: string; weight: string; category: string; description?: string; provider: string; municipality?: string; price: number; cost: number; stock: number; image: string; imageFile?: string; badge?: string; createdAt?: string; priceHistory?: { date: string; oldPrice: number; newPrice: number; variation: number }[] };
 type AdminOrder = (typeof demoOrders)[number] & { id: string };
 type WasteRecord = { id: string; productId: string; productName: string; quantity: number; cause: string; payer: string; responsible: string; chargeAmount: number; createdAt: string };
 
@@ -26,6 +26,16 @@ function loadStoredList<T>(key: string, fallback: T[]) {
   const raw = localStorage.getItem(key);
   if (!raw) return fallback;
   try { return JSON.parse(raw) as T[]; } catch { return fallback; }
+}
+
+function clearLegacyDemoStorage() {
+  if (typeof window === "undefined") return;
+  [
+    "drex-market-demo-providers",
+    "drex-market-demo-products",
+    "drex-market-deleted-providers",
+    "drex-market-deleted-products",
+  ].forEach((key) => localStorage.removeItem(key));
 }
 
 function loadInitialOrders() {
@@ -62,10 +72,8 @@ export default function AdminPage() {
   const [section, setSection] = useState("Dashboard");
   const adminMenuRef = useRef<HTMLDivElement>(null);
   const [adminMenuScrollable, setAdminMenuScrollable] = useState(false);
-  const [providersLoaded] = useState(true);
-  const [productsLoaded] = useState(true);
-  const [providerList, setProviderList] = useState<Provider[]>(() => loadStoredList<Provider>("drex-market-demo-providers", initialProviders));
-  const [productList, setProductList] = useState<Product[]>(() => loadStoredList<Product>("drex-market-demo-products", initialProducts).filter(keepVisibleProduct));
+  const [providerList, setProviderList] = useState<Provider[]>([]);
+  const [productList, setProductList] = useState<Product[]>([]);
   const [providerSearch, setProviderSearch] = useState("");
   const [viewProvider, setViewProvider] = useState<Provider | null>(null);
   const [editingProviderId, setEditingProviderId] = useState<string | null>(null);
@@ -73,7 +81,7 @@ export default function AdminPage() {
   const [showProductForm, setShowProductForm] = useState(false);
   const [providerImageName, setProviderImageName] = useState("");
   const [providerImagePreview, setProviderImagePreview] = useState("");
-  const [selectedProvider, setSelectedProvider] = useState(initialProviders[0].id);
+  const [selectedProvider, setSelectedProvider] = useState("");
   const [productImagePreview, setProductImagePreview] = useState("");
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [viewProductId, setViewProductId] = useState<string | null>(null);
@@ -104,37 +112,25 @@ export default function AdminPage() {
 
   useEffect(() => {
     let active = true;
+    clearLegacyDemoStorage();
     Promise.all([
       fetch("/api/admin/providers").then((response) => response.json()),
       fetch("/api/admin/products").then((response) => response.json()),
       fetch("/api/admin/orders").then((response) => response.json()),
     ]).then(([dbProviders, dbProducts, dbOrders]) => {
       if (!active) return;
-      const localProviders = loadStoredList<Provider>("drex-market-demo-providers", []);
-      const deletedProviderIds = loadStoredList<string>("drex-market-deleted-providers", []);
-      const mergedProviders = dbProviders
-        .filter((provider: Provider) => !deletedProviderIds.includes(provider.id))
-        .map((provider: Provider) => ({ ...provider, ...(localProviders.find((local) => local.id === provider.id) ?? {}) }));
-      const localOnlyProviders = localProviders.filter((provider) => !deletedProviderIds.includes(provider.id) && !mergedProviders.some((dbProvider: Provider) => dbProvider.id === provider.id));
-      const nextProviders = [...localOnlyProviders, ...mergedProviders];
-      const localProducts = loadStoredList<Product>("drex-market-demo-products", []).filter(keepVisibleProduct);
-      const deletedProductIds = Array.from(new Set([...loadStoredList<string>("drex-market-deleted-products", []), "combo-familiar-bauta", "kit-aseo-hogar"]));
-      localStorage.setItem("drex-market-deleted-products", JSON.stringify(deletedProductIds));
-      const mergedProducts = dbProducts
-        .filter((product: Product) => !deletedProductIds.includes(product.id))
-        .map((product: Product) => ({ ...product, ...(localProducts.find((local) => local.id === product.id) ?? {}) }));
-      const localOnlyProducts = localProducts.filter((product) => !deletedProductIds.includes(product.id) && !mergedProducts.some((dbProduct: Product) => dbProduct.id === product.id));
+      const nextProviders = dbProviders;
       setProviderList(nextProviders);
-      setProductList([...localOnlyProducts, ...mergedProducts].filter(keepVisibleProduct));
+      setProductList(dbProducts.filter(keepVisibleProduct));
       setOrderList(dbOrders);
-      setSelectedProvider(nextProviders[0]?.id ?? initialProviders[0].id);
+      setSelectedProvider(nextProviders[0]?.id ?? "");
     }).catch(() => {
-      // Si el backend falla, el demo sigue con datos locales para no bloquear la UI.
+      setProviderList([]);
+      setProductList([]);
+      setOrderList([]);
     });
     return () => { active = false; };
   }, []);
-  useEffect(() => { if (providersLoaded) localStorage.setItem("drex-market-demo-providers", JSON.stringify(providerList)); }, [providerList, providersLoaded]);
-  useEffect(() => { if (productsLoaded) localStorage.setItem("drex-market-demo-products", JSON.stringify(productList.filter(keepVisibleProduct))); }, [productList, productsLoaded]);
   useEffect(() => { localStorage.setItem("drex-market-waste-records", JSON.stringify(wasteRecords)); }, [wasteRecords]);
   useEffect(() => {
     const updateMenuScroll = () => {
@@ -264,7 +260,7 @@ export default function AdminPage() {
   const resetProductForm = () => {
     setEditingProductId(null);
     setProductForm({ slug: "", name: "", brand: "", category: "Mercado", weight: "", unit: "lb", cost: "", price: "", stock: "" });
-    setSelectedProvider(providerList[0]?.id ?? initialProviders[0].id);
+    setSelectedProvider(providerList[0]?.id ?? "");
     setProductImagePreview("");
   };
 
@@ -277,14 +273,14 @@ export default function AdminPage() {
       municipality: activeProvider.municipality,
       slug: productForm.slug,
       name: productForm.name,
-      brand: productForm.brand || "Marca demo",
+      brand: productForm.brand || "",
       weight: `${productForm.weight} ${productForm.unit}`.trim(),
       category: productForm.category,
-      description: "Producto agregado desde admin demo.",
+      description: "Producto agregado desde admin.",
       price: productForm.price,
       cost: productForm.cost,
       stock: productForm.stock,
-      image: productImagePreview || "📦",
+      image: productImagePreview || "",
     };
     const response = await fetch(editingProductId ? `/api/admin/products/${editingProductId}` : "/api/admin/products", {
       method: editingProductId ? "PUT" : "POST",

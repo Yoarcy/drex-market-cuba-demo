@@ -19,7 +19,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className={`group flex h-full flex-col overflow-hidden rounded-[20px] border shadow-[0_12px_32px_rgba(15,23,42,0.06)] transition duration-200 ${isOut ? "border-red-300 bg-red-50" : "border-slate-200 bg-white hover:-translate-y-1 hover:shadow-xl"}`}>
       <div className={`flex aspect-[4/3] items-center justify-center text-6xl ${isOut ? "bg-red-100 opacity-70" : "bg-gradient-to-br from-emerald-50 via-sky-50 to-orange-50"}`}>
-        {product.image}
+        {product.image?.startsWith?.("data:") ? <img src={product.image} alt={product.name} className="h-full w-full object-contain p-4" /> : product.image || <span className="text-sm font-black text-slate-400">Sin imagen</span>}
       </div>
       <div className="flex flex-1 flex-col p-4">
         <div className="mb-3 flex items-center justify-between gap-3">
@@ -32,7 +32,7 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="mt-auto flex items-end justify-between pt-5">
           <div>
             <p className={isOut ? "text-[22px] font-extrabold tracking-[-0.02em] text-red-700" : "text-[22px] font-extrabold tracking-[-0.02em] text-emerald-700"}>{formatMoney(product.price)}</p>
-            <p className={isOut ? "text-xs font-black text-red-700" : "text-xs text-slate-500"}>Stock demo: {product.stock}</p>
+            <p className={isOut ? "text-xs font-black text-red-700" : "text-xs text-slate-500"}>Stock: {product.stock}</p>
           </div>
           {isOut ? (
             <button disabled className="rounded-full bg-red-100 px-4 py-2 text-sm font-bold text-red-700">No disponible</button>

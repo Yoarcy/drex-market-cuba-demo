@@ -16,7 +16,7 @@ function mapProvider(provider: { id: string; name: string; contactName: string |
 }
 
 export async function GET() {
-  const providers = await prisma.provider.findMany({ include: { municipality: { include: { province: true } } }, orderBy: { createdAt: "desc" } });
+  const providers = await prisma.provider.findMany({ where: { isActive: true }, include: { municipality: { include: { province: true } } }, orderBy: { createdAt: "desc" } });
   return NextResponse.json(providers.map(mapProvider));
 }
 
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     data: {
       municipalityId: municipality.id,
       name: body.name,
-      contactName: body.contact || body.notes || "Operador demo",
+      contactName: body.contact || body.notes || "Sin notas",
       phone: body.phone || "",
       isActive: true,
     },
