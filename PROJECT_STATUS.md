@@ -4,7 +4,7 @@
 
 Fase actual: **integración demo con SQLite/Prisma + pulido visual público/admin**.
 
-Rama de trabajo activa: `feature/sqlite-cart-orders-admin`.
+Rama de trabajo activa: `fix/product-form-layout-safe`.
 
 ## Completado
 
@@ -84,6 +84,27 @@ Rama de trabajo activa: `feature/sqlite-cart-orders-admin`.
 - La UI tiene prioridad de portafolio: debe verse comercial, moderna y responsive.
 - Tienda pública y panel admin deben estar separados; el usuario común no debe ver ni navegar funciones administrativas.
 - No versionar logs, archivos `.pid`, previews locales ni `prisma/dev.db`.
+
+
+## Continuidad guardada — 2026-06-29 18:55
+
+Último estado antes de apagar por corte de corriente:
+
+- Trabajo guardado en Git local hasta commit `e8db9c8 fix: start admin collapsible boxes closed`.
+- Servidor usado durante pruebas: `npm run start -- -H 0.0.0.0 -p 3001`.
+- Login admin usado: `admin@demo.local` / `demo123`.
+- Cambios recientes completados:
+  - Mermas persistentes en SQLite/Prisma con ajuste real de stock al registrar/eliminar.
+  - Se eliminó el apartado duplicado **Pedidos**; el flujo queda en **Seguimiento**.
+  - Billeteras quedó como módulo de control/asignación de billetera o forma de pago, no recarga de beneficiarios.
+  - Reportes de proveedores usan datos reales de proveedores/productos/mermas.
+  - Box principales de Reportes, Lista de proveedores, Lista de productos, Historial de merma y Asignar billetera abren/cierran tocando el título.
+  - Se quitaron botones/pastillas de Expandir/Contraer.
+  - Todos los box desplegables quedan contraídos por defecto.
+- Verificación reciente:
+  - `node node_modules/typescript/bin/tsc --noEmit` sin errores.
+  - `npm run build` correcto; solo warnings conocidos por uso de `<img>`.
+- Nota: si se reinicia WSL/PC, la IP LAN puede cambiar. Volver a levantar con `npm run start -- -H 0.0.0.0 -p 3001` y revisar nueva IP si hace falta.
 
 ## Pendiente inmediato recomendado
 
