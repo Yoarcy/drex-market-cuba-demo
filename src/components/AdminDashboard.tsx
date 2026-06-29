@@ -388,9 +388,39 @@ export function AdminDashboard() {
     setPreviewWasteProductId("");
   };
 
-  const deleteWasteRecord = (recordId: string) => {
-    if (!confirm("¿Seguro que quieres eliminar esta merma del historial? Esta acción no devuelve stock automáticamente.")) return;
-    setWasteRecords(wasteRecords.filter((record) => record.id !== recordId));
+  const deleteWasteRecord = async (recordId: string) => {
+    const record = wasteRecords.find((item) => item.id === recordId);
+    if (!record) return;
+    if (!confirm("¿Seguro que quieres eliminar esta merma del historial? Se devolverá la cantidad al stock del producto.")) return;
+    const currentProduct = productList.find((product) => product.id === record.productId);
+    if (!currentProduct) {
+      alert("No se encontró el producto para devolver el stock.");
+      return;
+    }
+    const restoredStock = currentProduct.stock + record.quantity;
+    const response = await fetch(`/api/admin/products/${currentProduct.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        slug: currentProduct.slug,
+        name: currentProduct.name,
+        brand: currentProduct.brand,
+        weight: currentProduct.weight,
+        category: currentProduct.category,
+        description: currentProduct.description,
+        price: currentProduct.price,
+        cost: currentProduct.cost,
+        stock: restoredStock,
+        image: currentProduct.image,
+      }),
+    });
+    if (!response.ok) {
+      alert("No se pudo devolver el stock. Intenta otra vez.");
+      return;
+    }
+    const savedProduct: Product = await response.json();
+    setProductList(productList.map((product) => product.id === savedProduct.id ? { ...product, ...savedProduct } : product));
+    setWasteRecords(wasteRecords.filter((item) => item.id !== recordId));
   };
 
   const changeOrderStatus = (orderId: string, status: string) => setOrderList(orderList.map((order) => order.id === orderId ? { ...order, status } : order));
