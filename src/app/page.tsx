@@ -15,7 +15,6 @@ export default function Home() {
           <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
             Plataforma demostrativa de portafolio: e-commerce, carrito, login, DemoPay, Saldo DREX tipo débito, órdenes, proveedores, repartidores, admin y analítica comercial.
           </p>
-          <p className="mt-5 text-sm font-semibold text-slate-500">No vende productos reales. No procesa pagos reales. No use datos personales reales.</p>
         </div>
         <div className="demo-card hero-carousel-card overflow-hidden p-0">
           <div className="hero-carousel" aria-label="Tira automática de imágenes DREX Market">
