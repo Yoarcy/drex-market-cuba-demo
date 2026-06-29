@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { requireAdminApi } from "@/lib/auth";
 
 function slugify(text: string) {
   return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/ñ/g, "n").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -31,11 +32,15 @@ function mapProduct(product: { id: string; slug: string; name: string; descripti
 }
 
 export async function GET() {
+  const unauthorized = await requireAdminApi();
+  if (unauthorized) return unauthorized;
   const products = await prisma.product.findMany({ where: { isActive: true }, include: { provider: true, municipality: true }, orderBy: { createdAt: "desc" } });
   return NextResponse.json(products.map(mapProduct));
 }
 
 export async function POST(request: Request) {
+  const unauthorized = await requireAdminApi();
+  if (unauthorized) return unauthorized;
   const body = await request.json();
   const municipality = await prisma.municipality.findFirstOrThrow({ where: { name: body.municipality || "Bauta" } });
   let provider = body.providerId

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { requireAdminApi } from "@/lib/auth";
 
 function slugify(text: string) {
   return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/ñ/g, "n").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -31,6 +32,8 @@ function mapProduct(product: { id: string; slug: string; name: string; descripti
 }
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const unauthorized = await requireAdminApi();
+  if (unauthorized) return unauthorized;
   const { id } = await params;
   const body = await request.json();
   const current = await prisma.product.findUniqueOrThrow({ where: { id } });
@@ -62,6 +65,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 }
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const unauthorized = await requireAdminApi();
+  if (unauthorized) return unauthorized;
   const { id } = await params;
   try {
     await prisma.product.delete({ where: { id } });

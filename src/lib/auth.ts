@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import type { UserRole } from "@prisma/client";
 
@@ -77,4 +78,10 @@ export async function requireAdmin() {
   const user = await getCurrentUser();
   if (!user || user.role !== "ADMIN") redirect("/admin/login");
   return user;
+}
+
+export async function requireAdminApi() {
+  const user = await getCurrentUser();
+  if (!user || user.role !== "ADMIN") return NextResponse.json({ error: "No autorizado." }, { status: 401 });
+  return null;
 }

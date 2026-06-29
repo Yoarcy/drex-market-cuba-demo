@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { requireAdminApi } from "@/lib/auth";
 
 function mapProvider(provider: { id: string; name: string; contactName: string | null; phone: string | null; isActive: boolean; municipality: { name: string; province: { name: string } } }) {
   return {
@@ -16,11 +17,15 @@ function mapProvider(provider: { id: string; name: string; contactName: string |
 }
 
 export async function GET() {
+  const unauthorized = await requireAdminApi();
+  if (unauthorized) return unauthorized;
   const providers = await prisma.provider.findMany({ where: { isActive: true }, include: { municipality: { include: { province: true } } }, orderBy: { createdAt: "desc" } });
   return NextResponse.json(providers.map(mapProvider));
 }
 
 export async function POST(request: Request) {
+  const unauthorized = await requireAdminApi();
+  if (unauthorized) return unauthorized;
   const body = await request.json();
   const municipality = await prisma.municipality.findFirstOrThrow({ where: { name: body.municipality || "Bauta" } });
   const provider = await prisma.provider.create({
