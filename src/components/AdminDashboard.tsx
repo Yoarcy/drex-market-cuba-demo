@@ -80,9 +80,9 @@ export function AdminDashboard() {
   const [viewProvider, setViewProvider] = useState<Provider | null>(null);
   const [editingProviderId, setEditingProviderId] = useState<string | null>(null);
   const [showProviderForm, setShowProviderForm] = useState(false);
-  const [showProviderList, setShowProviderList] = useState(true);
+  const [showProviderList, setShowProviderList] = useState(false);
   const [showProductForm, setShowProductForm] = useState(false);
-  const [showProductList, setShowProductList] = useState(true);
+  const [showProductList, setShowProductList] = useState(false);
   const [providerImageName, setProviderImageName] = useState("");
   const [providerImagePreview, setProviderImagePreview] = useState("");
   const [selectedProvider, setSelectedProvider] = useState("");
@@ -101,9 +101,9 @@ export function AdminDashboard() {
   const [walletEntries, setWalletEntries] = useState<WalletEntry[]>([]);
   const [walletSearch, setWalletSearch] = useState("");
   const [showWalletAssignForm, setShowWalletAssignForm] = useState(false);
-  const [showReportSummary, setShowReportSummary] = useState(true);
-  const [showReportChart, setShowReportChart] = useState(true);
-  const [showReportIntelligence, setShowReportIntelligence] = useState(true);
+  const [showReportSummary, setShowReportSummary] = useState(false);
+  const [showReportChart, setShowReportChart] = useState(false);
+  const [showReportIntelligence, setShowReportIntelligence] = useState(false);
   const [walletTopupForm, setWalletTopupForm] = useState({ beneficiaryName: "", senderName: "", amount: "", note: "" });
   const [walletAssignForm, setWalletAssignForm] = useState({ assignedToName: "", assignedToRole: "Trabajador", amount: "", note: "" });
   const [stockToAdd, setStockToAdd] = useState("");
