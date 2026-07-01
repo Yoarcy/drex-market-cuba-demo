@@ -184,12 +184,15 @@ model Product {
   providerId     String
   name           String
   slug           String @unique
+  brand          String?
   description    String
   category       String
   providerCost   Int
   salePrice      Int
   grossMargin    Int
   stock          Int @default(0)
+  weight         String?
+  unit           String?
   isActive       Boolean @default(true)
   image          String?
   createdAt      DateTime @default(now())

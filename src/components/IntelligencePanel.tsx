@@ -2,8 +2,8 @@ import { demandForecast, productRecommendations } from "@/lib/demo-data";
 
 export function IntelligencePanel() {
   const summary = [
-    ["Ventas demo", "$242", "Total acumulado ficticio"],
-    ["Ganancia estimada", "$63", "Margen bruto demo"],
+    ["Ventas", "$242", "Total acumulado"],
+    ["Ganancia estimada", "$63", "Margen bruto"],
     ["Pedidos activos", "4", "Preparando / reparto / entregados"],
     ["Riesgo stock", "2", "Productos a vigilar"],
   ];
@@ -21,10 +21,10 @@ export function IntelligencePanel() {
       </div>
       <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
       <div className="demo-card p-6">
-        <p className="text-sm font-black uppercase tracking-[0.25em] text-emerald-600">Motor inteligente demo</p>
+        <p className="text-sm font-black uppercase tracking-[0.25em] text-emerald-600">Motor inteligente</p>
         <h2 className="mt-3 text-2xl font-black text-slate-950">Recomendaciones comprobables</h2>
         <p className="mt-2 text-sm leading-6 text-slate-600">
-          No es magia: son reglas visibles usando ventas ficticias, co-compra, tendencia semanal, stock y uso de Saldo DREX.
+          Reglas visibles usando ventas, co-compra, tendencia semanal, stock y uso de Saldo DREX.
         </p>
         <div className="mt-5 space-y-4">
           {productRecommendations.map((block) => (
@@ -85,7 +85,7 @@ export function IntelligencePanel() {
           </table>
         </div>
         <div className="mt-5 rounded-2xl bg-sky-50 p-4 text-sm font-semibold text-sky-800">
-          Fórmula demo visible: promedio diario = ventas últimos 7 días / 7. Días a agotarse = stock / promedio diario. Proyección = ventas actuales + 60% de la tendencia semanal.
+          Fórmula visible: promedio diario = ventas últimos 7 días / 7. Días a agotarse = stock / promedio diario. Proyección = ventas actuales + 60% de la tendencia semanal.
         </div>
       </div>
       </div>

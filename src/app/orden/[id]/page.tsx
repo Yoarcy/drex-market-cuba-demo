@@ -11,7 +11,7 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
       <section className="demo-card p-8">
         <span className="badge-demo">Orden creada</span>
         <h1 className="mt-4 text-4xl font-black text-slate-950">Comprobante {id}</h1>
-        <p className="mt-2 text-slate-600">Pago DemoPay aprobado. Orden ficticia registrada para Bauta.</p>
+        <p className="mt-2 text-slate-600">Pago aprobado. Orden registrada para Bauta.</p>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {["Pago confirmado", "Preparando", "Repartidor pendiente"].map((status) => (
             <div key={status} className="rounded-2xl bg-emerald-50 p-4 text-center font-black text-emerald-800">{status}</div>
@@ -19,7 +19,7 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
         </div>
         <div className="mt-8 rounded-2xl border border-slate-200 p-5">
           <h2 className="text-xl font-black">Beneficiario</h2>
-          <p className="mt-2 text-slate-600">Mariela Pérez Demo · Bauta, Artemisa · Calle demo sin datos reales</p>
+          <p className="mt-2 text-slate-600">Mariela Pérez · Bauta, Artemisa · Dirección de entrega registrada</p>
         </div>
         <div className="mt-6 space-y-3">
           {orderItems.map((item) => (
@@ -27,7 +27,7 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
               <span>{item.quantity} × {item.name}</span><span>{formatMoney(item.price * item.quantity)}</span>
             </div>
           ))}
-          <div className="flex justify-between rounded-2xl bg-slate-950 p-4 text-xl font-black text-white"><span>Total demo</span><span>{formatMoney(total)}</span></div>
+          <div className="flex justify-between rounded-2xl bg-slate-950 p-4 text-xl font-black text-white"><span>Total</span><span>{formatMoney(total)}</span></div>
         </div>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link href="/mis-pedidos" className="btn-primary">Ver estado</Link>

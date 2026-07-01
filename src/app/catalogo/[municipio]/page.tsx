@@ -28,9 +28,9 @@ export default async function MunicipalityCatalogPage({ params }: { params: Prom
       </div>
 
       <div className="mb-6 grid gap-3 md:grid-cols-4">
-        <Link href={`/catalogo/${municipio}`} className="rounded-2xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm font-black text-emerald-700">Todos ({routeProducts.length})</Link>
+        <Link href={`/catalogo/${municipio}`} className="category-filter-chip category-filter-chip-active">Todos ({routeProducts.length})</Link>
         {categories.map((category) => (
-          <Link key={category.slug} href={`/catalogo/${municipio}/${category.slug}`} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50">
+          <Link key={category.slug} href={`/catalogo/${municipio}/${category.slug}`} className="category-filter-chip">
             {category.name} ({category.count})
           </Link>
         ))}

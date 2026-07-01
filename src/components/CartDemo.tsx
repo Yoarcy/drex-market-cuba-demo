@@ -131,12 +131,12 @@ export function CartDemo() {
       </section>
 
           {checkoutOpen && (
-        <section className="checkout-demo-panel" aria-label="Proceso de compra simulado">
+        <section className="checkout-demo-panel" aria-label="Proceso de compra">
           <div className="checkout-demo-head">
             <div>
-              <span className="badge">Compra demo</span>
+              <span className="badge">Compra segura</span>
               <h2>Datos para completar el pedido</h2>
-              <p>Simulación completa: comprador, beneficiario, entrega y método de pago. No uses datos bancarios reales.</p>
+              <p>Completa beneficiario, entrega y método de pago para confirmar tu pedido.</p>
             </div>
             <button type="button" className="checkout-close" onClick={() => setCheckoutOpen(false)} aria-label="Cerrar compra">×</button>
           </div>
@@ -182,13 +182,13 @@ export function CartDemo() {
                   <button type="button" className={`payment-option ${paymentMethod === "card" ? "active" : ""}`} onClick={() => setPaymentMethod("card")}>Tarjeta bancaria</button>
                 </div>
                 {paymentMethod === "wallet" ? (
-                  <p>Se descontará de tu saldo DemoPay/DREX Wallet. Si no tienes saldo suficiente, queda como pago pendiente demo.</p>
+                  <p>Se descontará de tu saldo DREX Wallet. Si no tienes saldo suficiente, queda como pago pendiente.</p>
                 ) : (
-                  <p>Pago simulado con tarjeta bancaria. No se piden números reales; solo se muestra el flujo comercial.</p>
+                  <p>Continúa con tarjeta bancaria para completar el flujo de pago.</p>
                 )}
               </div>
 
-              <button type="submit" className="btn-primary checkout-finish-button">Confirmar compra demo</button>
+              <button type="submit" className="btn-primary checkout-finish-button">Confirmar compra</button>
             </form>
         </section>
       )}

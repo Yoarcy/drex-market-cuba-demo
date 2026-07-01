@@ -6,7 +6,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "DREX Market Cuba Demo",
-  description: "Marketplace hiperlocal demostrativo para portafolio. No procesa pagos reales.",
+  description: "Marketplace hiperlocal para comprar productos por municipio y seguir pedidos en Cuba.",
   icons: {
     icon: "/assets/brand/favicon.svg",
     shortcut: "/assets/brand/favicon.svg",

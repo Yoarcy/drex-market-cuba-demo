@@ -31,9 +31,9 @@ export default async function CategoryCatalogPage({ params }: { params: Promise<
       </div>
 
       <div className="mb-6 grid gap-3 md:grid-cols-4">
-        <Link href={`/catalogo/${municipio}`} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50">Todos</Link>
+        <Link href={`/catalogo/${municipio}`} className="category-filter-chip">Todos</Link>
         {categories.map((item) => (
-          <Link key={item.slug} href={`/catalogo/${municipio}/${item.slug}`} className={`rounded-2xl border px-4 py-3 text-sm font-black transition ${item.slug === categoria ? "border-emerald-300 bg-emerald-50 text-emerald-700" : "border-slate-200 bg-white text-slate-700 hover:border-emerald-300 hover:bg-emerald-50"}`}>
+          <Link key={item.slug} href={`/catalogo/${municipio}/${item.slug}`} className={`category-filter-chip ${item.slug === categoria ? "category-filter-chip-active" : ""}`}>
             {item.name} ({item.count})
           </Link>
         ))}

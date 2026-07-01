@@ -138,7 +138,7 @@ export function ProfileMenu() {
           {view === "recover" && (
             <form className="profile-form" onSubmit={(event) => { event.preventDefault(); setView("login"); }}>
               <h2>Recuperar contraseña</h2>
-              <p>Escribe tu correo y te enviaremos instrucciones para recuperar el acceso. En esta demo no se envían correos reales.</p>
+              <p>Escribe tu correo y te enviaremos instrucciones para recuperar el acceso.</p>
               <label>Correo<input type="email" autoComplete="email" placeholder="cliente@demo.local" required /></label>
               <button type="submit" className="btn-primary profile-full-button">Enviar recuperación</button>
               <button type="button" className="profile-secondary-button" onClick={() => setView("login")}>Volver al login</button>

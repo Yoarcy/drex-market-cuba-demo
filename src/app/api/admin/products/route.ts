@@ -9,13 +9,21 @@ function slugify(text: string) {
 function cents(value: number | string) { return Math.round(Number(value || 0) * 100); }
 function dollars(value: number) { return Math.round(value) / 100; }
 
-function mapProduct(product: { id: string; slug: string; name: string; description: string; category: string; providerCost: number; salePrice: number; stock: number; image: string | null; isActive: boolean; createdAt: Date; provider: { name: string }; municipality: { name: string } }) {
+function splitWeight(value: unknown) {
+  const text = String(value || "").trim();
+  const [weight = "", unit = "lb"] = text.split(/\s+/, 2);
+  return { weight, unit: unit || "lb", label: text || "Unidad" };
+}
+
+function mapProduct(product: { id: string; slug: string; name: string; brand: string | null; description: string; category: string; providerCost: number; salePrice: number; stock: number; weight: string | null; unit: string | null; image: string | null; isActive: boolean; createdAt: Date; provider: { name: string }; municipality: { name: string } }) {
+  const weightLabel = product.weight ? `${product.weight} ${product.unit || ""}`.trim() : "Unidad";
   return {
     id: product.id,
     slug: product.slug,
     name: product.name,
-    brand: "",
-    weight: "Unidad",
+    brand: product.brand || "",
+    weight: weightLabel,
+    unit: product.unit || "lb",
     category: product.category,
     description: product.description,
     provider: product.provider.name,
@@ -63,6 +71,7 @@ export async function POST(request: Request) {
   }
   const salePrice = cents(body.price);
   const providerCost = cents(body.cost);
+  const parsedWeight = splitWeight(body.weight);
   const baseSlug = slugify(body.slug || body.name || "producto");
   let slug = baseSlug;
   let suffix = 2;
@@ -75,13 +84,16 @@ export async function POST(request: Request) {
       municipalityId: provider.municipalityId,
       providerId: provider.id,
       name: body.name,
+      brand: body.brand || null,
       slug,
-      description: body.description || "Producto agregado desde admin.",
+      description: body.description || "Producto disponible en DREX Market Cuba.",
       category: body.category || "Mercado",
       providerCost,
       salePrice,
       grossMargin: salePrice - providerCost,
       stock: Number(body.stock || 0),
+      weight: parsedWeight.weight || null,
+      unit: parsedWeight.weight ? parsedWeight.unit : null,
       image: body.image || "",
       isActive: true,
     },

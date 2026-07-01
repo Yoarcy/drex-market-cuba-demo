@@ -9,13 +9,21 @@ function slugify(text: string) {
 function cents(value: number | string) { return Math.round(Number(value || 0) * 100); }
 function dollars(value: number) { return Math.round(value) / 100; }
 
-function mapProduct(product: { id: string; slug: string; name: string; description: string; category: string; providerCost: number; salePrice: number; stock: number; image: string | null; isActive: boolean; createdAt: Date; provider: { name: string }; municipality: { name: string } }, body?: { brand?: string; weight?: string }) {
+function splitWeight(value: unknown) {
+  const text = String(value || "").trim();
+  const [weight = "", unit = "lb"] = text.split(/\s+/, 2);
+  return { weight, unit: unit || "lb" };
+}
+
+function mapProduct(product: { id: string; slug: string; name: string; brand: string | null; description: string; category: string; providerCost: number; salePrice: number; stock: number; weight: string | null; unit: string | null; image: string | null; isActive: boolean; createdAt: Date; provider: { name: string }; municipality: { name: string } }) {
+  const weightLabel = product.weight ? `${product.weight} ${product.unit || ""}`.trim() : "Unidad";
   return {
     id: product.id,
     slug: product.slug,
     name: product.name,
-    brand: body?.brand || "",
-    weight: body?.weight || "Unidad",
+    brand: product.brand || "",
+    weight: weightLabel,
+    unit: product.unit || "lb",
     category: product.category,
     description: product.description,
     provider: product.provider.name,
@@ -46,10 +54,12 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   }
   const salePrice = cents(body.price ?? dollars(current.salePrice));
   const providerCost = cents(body.cost ?? dollars(current.providerCost));
+  const parsedWeight = splitWeight(body.weight ?? (current.weight ? `${current.weight} ${current.unit || ""}` : ""));
   const product = await prisma.product.update({
     where: { id },
     data: {
       name: body.name || current.name,
+      brand: body.brand ?? current.brand,
       slug,
       description: body.description || current.description,
       category: body.category || current.category,
@@ -57,11 +67,13 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       salePrice,
       grossMargin: salePrice - providerCost,
       stock: Number(body.stock ?? current.stock),
+      weight: parsedWeight.weight || null,
+      unit: parsedWeight.weight ? parsedWeight.unit : null,
       image: body.image || current.image,
     },
     include: { provider: true, municipality: true },
   });
-  return NextResponse.json(mapProduct(product, body));
+  return NextResponse.json(mapProduct(product));
 }
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
